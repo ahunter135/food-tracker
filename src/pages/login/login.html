@@ -12,13 +12,13 @@
         <ion-list inset [@bounceInBottom]="formState">
 
           <ion-item>
-            <ion-label>Username</ion-label>
-            <ion-input type="text" autocapitalize="none"></ion-input>
+            <ion-label>Email</ion-label>
+            <ion-input type="text" required [ngModel]="userData.email" (keyup)="onKey($event, 'user')" autocapitalize="none"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label>Password</ion-label>
-            <ion-input type="password"></ion-input>
+            <ion-input type="password" required minlength="6" [ngModel]="userData.password" (keyup)="onKey($event, 'pass')" ></ion-input>
           </ion-item>
 
         </ion-list>
@@ -27,7 +27,7 @@
 
     <ion-row>
       <ion-col>
-        <button ion-button class="login-button" [@fadeIn]="loginState">Login</button>
+        <button ion-button class="login-button" [@fadeIn]="loginState" (click)="login()">Login</button>
       </ion-col>
     </ion-row>
     <ion-row>

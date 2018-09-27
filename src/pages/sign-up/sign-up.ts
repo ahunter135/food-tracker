@@ -3,7 +3,11 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { LoadProvider } from '../../providers/load/load';
 import { HttpProvider } from '../../providers/http/http';
+import firebase from 'firebase';
+import { Storage } from '@ionic/storage';
 
+
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the SignUpPage page.
@@ -44,16 +48,13 @@ import { HttpProvider } from '../../providers/http/http';
 export class SignUpPage {
 
   public user = {
-    username: '',
-    fullName: '',
     email: '',
     password: '',
     passwordConf: ''
   }
   public disabled = false;
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private http: HttpProvider, public loader: LoadProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private http: HttpProvider, public loader: LoadProvider, private storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -63,12 +64,16 @@ export class SignUpPage {
     this.loader.createLoader();
     this.loader.presentLoader();
     this.http.createAccount(this.user).then((data) => {
-      if (data == 200) {
-        this.loader.dismissLoader();
-      } else {
-        alert("Username already exists");
-      }
-    });
+      this.loader.dismissLoader();
+      this.storage.set('LoggedIn', true);
+      this.navCtrl.setRoot(HomePage, {
+        user: data
+      });
+    })
+    .catch(e => {
+      this.loader.dismissLoader();
+      alert(e.message);
+    })
   }
 
   cancelModal() {
@@ -76,18 +81,14 @@ export class SignUpPage {
   }
 
   onKey(event: any, state) { // without type info
-    if (state == 'user') {
-      this.user.username = event.target.value;
-    } else if (state == 'pass') {
+    if (state == 'pass') {
       this.user.password = event.target.value;
-    } else if (state == 'fullName') {
-      this.user.fullName = event.target.value;
     } else if (state == 'email') {
       this.user.email = event.target.value;
     } else {
       this.user.passwordConf = event.target.value;
     }
-    if ((this.user.username.length >= 5) && (this.user.fullName.length > 0) && (this.user.email.length > 0) && (this.user.password.length >= 6) && (this.user.passwordConf === this.user.password)) {
+    if ((this.user.email.length > 0) && (this.user.password.length >= 6) && (this.user.passwordConf === this.user.password)) {
       this.disabled = false;
     }
   }

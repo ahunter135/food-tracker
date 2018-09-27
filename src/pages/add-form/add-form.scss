@@ -1,0 +1,10 @@
+page-add-form {
+  /* Empty. Add your own CSS if you like */
+  /* Utilities */
+  .toolbar-title.toolbar-title-ios,
+  .toolbar-title.toolbar-title-md,
+  .toolbar-title.toolbar-title-wp {
+    color: map-get($colors, white);
+  }
+
+}

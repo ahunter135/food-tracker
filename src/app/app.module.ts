@@ -1,12 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { CalendarModule } from 'ionic3-calendar-en';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { AddFormPage } from '../pages/add-form/add-form';
 import { LoadPage } from '../pages/load/load';
 import { SignUpPage } from '../pages/sign-up/sign-up';
+import { LoginPage } from '../pages/login/login';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -17,32 +19,36 @@ import { FCM } from '@ionic-native/fcm';
 import { IonicStorageModule } from '@ionic/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP } from '@ionic-native/http';
-
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { LoadProvider } from '../providers/load/load';
 import { HttpProvider } from '../providers/http/http';
+import { UserProvider } from '../providers/stores/user';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
+    AddFormPage,
     LoadPage,
-    SignUpPage
+    SignUpPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
+    AddFormPage,
     LoadPage,
-    SignUpPage
+    SignUpPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
@@ -52,7 +58,9 @@ import { HttpProvider } from '../providers/http/http';
     FCM,
     LoadProvider,
     HTTP,
-    HttpProvider
+    HttpProvider,
+    GooglePlus,
+    UserProvider
   ]
 })
 export class AppModule {}

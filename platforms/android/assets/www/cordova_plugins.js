@@ -271,6 +271,14 @@ module.exports = [
     "clobbers": [
       "window.StatusBar"
     ]
+  },
+  {
+    "id": "cordova-plugin-googleplus.GooglePlus",
+    "file": "plugins/cordova-plugin-googleplus/www/GooglePlus.js",
+    "pluginId": "cordova-plugin-googleplus",
+    "clobbers": [
+      "window.plugins.googleplus"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -286,7 +294,8 @@ module.exports.metadata =
   "cordova-sqlite-storage": "2.3.2",
   "cordova-plugin-file": "6.0.1",
   "cordova-plugin-advanced-http": "1.11.1",
-  "cordova-plugin-statusbar": "2.4.2"
+  "cordova-plugin-statusbar": "2.4.2",
+  "cordova-plugin-googleplus": "5.3.1"
 };
 // BOTTOM OF METADATA
 });

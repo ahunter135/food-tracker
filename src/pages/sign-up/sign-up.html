@@ -11,21 +11,8 @@
         <ion-list inset [@bounceInBottom]="formState">
 
           <ion-item>
-            <ion-label>Username</ion-label>
-            <ion-input type="text" required [ngModel]="user.username" (keyup)="onKey($event, 'user')" autocapitalize="none"></ion-input>
-          </ion-item>
-          <small style="color: red;" [hidden]="user.username.length > 5 || user.username == ''">
-            {{user.username.length}} of 5 Characters
-          </small>
-
-          <ion-item>
-            <ion-label>Full Name</ion-label>
-            <ion-input type="text" [ngModel]="user.fullName" (keyup)="onKey($event, 'fullName')" autocapitalize="none"></ion-input>
-          </ion-item>
-
-          <ion-item>
             <ion-label>Email</ion-label>
-            <ion-input type="text" [ngModel]="user.email" (keyup)="onKey($event, 'email')" autocapitalize="none"></ion-input>
+            <ion-input type="text" required [ngModel]="user.email" (keyup)="onKey($event, 'email')" autocapitalize="none"></ion-input>
           </ion-item>
 
           <ion-item>

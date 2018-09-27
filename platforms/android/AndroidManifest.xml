@@ -29,4 +29,6 @@
     <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="26" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 </manifest>
