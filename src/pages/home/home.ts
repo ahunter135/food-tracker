@@ -1,9 +1,10 @@
-import firebase from 'firebase';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ModalController, Events } from 'ionic-angular';
 
 import { UserProvider } from '../../providers/stores/user';
+import { HttpProvider } from '../../providers/http/http';
+import { LoadProvider } from '../../providers/load/load';
 
 
 @Component({
@@ -12,20 +13,23 @@ import { UserProvider } from '../../providers/stores/user';
 })
 export class HomePage {
   user = null;
-  eventsList = [{
-    year: 2018,
-    month: 8,
-    date: 26
-  }];
+  data = null;
+  isLoading = true;
 
-  ref = firebase.database().ref('user-accounts/');
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public modalCtrl: ModalController, private userData: UserProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public modalCtrl: ModalController, private userData: UserProvider, private http: HttpProvider, public loader: LoadProvider) {
   }
 
   ionViewWillLoad() {
     this.user = this.userData.user;
-    this.events.publish('user:created', this.user.user.email);
+    this.events.publish('user:created', this.user.email);
+  }
+
+  async ionViewDidLoad() {
+    let temp = await this.http.getUserData();
+    this.data = temp.val();
+    this.loader.dismissLoader();
+    this.isLoading = false;
+    console.log(this.data.entries.length);
   }
 
   onDaySelect(event) {

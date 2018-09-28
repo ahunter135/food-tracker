@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -28,6 +30,26 @@ export class MyApp {
   };
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private fcm: FCM, public events: Events, private storage: Storage, private userData: UserProvider) {
+    firebase.initializeApp({
+        apiKey: "AIzaSyCLOlz7uQrEC-HutG9MILNsgMtFE5CyOyU",
+        authDomain: "foodtracker-8cd65.firebaseapp.com",
+        databaseURL: "https://foodtracker-8cd65.firebaseio.com/",
+        projectId: "foodtracker-8cd65",
+        storageBucket: "gs://foodtracker-8cd65.appspot.com",
+        messagingSenderId: "1074520532115"
+    });
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        userData.set(user);
+        events.publish('user:not-set', user);
+      } else {
+        // No user is signed in.
+        events.publish('user:not-set', false);
+      }
+    });
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -42,15 +64,6 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.splashScreen.hide();
-
-      firebase.initializeApp({
-          apiKey: "AIzaSyCLOlz7uQrEC-HutG9MILNsgMtFE5CyOyU",
-          authDomain: "foodtracker-8cd65.firebaseapp.com",
-          databaseURL: "https://foodtracker-8cd65.firebaseio.com/",
-          projectId: "foodtracker-8cd65",
-          storageBucket: "gs://foodtracker-8cd65.appspot.com",
-          messagingSenderId: "1074520532115"
-      });
 
       this.fcm.getToken().then(token => {
       });

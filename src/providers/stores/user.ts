@@ -1,6 +1,8 @@
 import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 
+import firebase from 'firebase';
+
 @Injectable()
 export class UserProvider {
 
@@ -9,12 +11,13 @@ export class UserProvider {
 
   constructor(private storage: Storage) {}
 
-  set(user) {
+  async set(user) {
     this.user = user;
+    this.setLoginFlag(true);
   }
 
   async get() {
-    return await this.storage.get('User');
+    return this.user;
   }
 
   async setLoginFlag(flag) {
@@ -22,13 +25,8 @@ export class UserProvider {
     await this.storage.set('LoggedIn', this.loggedIn);
   }
 
-  async store() {
-    await this.storage.set('User', JSON.stringify(this.user))
-  }
-
   async load() {
     this.user = await this.get();
-    this.user = JSON.parse(this.user);
   }
 
 }

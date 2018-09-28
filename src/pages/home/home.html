@@ -6,20 +6,20 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-calendar #calendar lang="en" [events]="eventsList" (onDaySelect)="onDaySelect($event)"></ion-calendar>
-  <div class="events-list">
-    <div *ngIf="!(eventsList.length > 0); else showList">
-      <p>Events you add will be shown here</p>
-    </div>
-    <ng-template #showList>
-      <ion-list>
-        <ion-list-header>
-          Events
-        </ion-list-header>
-        <ion-item>Terminator II</ion-item>
-        <ion-item>The Empire Strikes Back</ion-item>
-        <ion-item>Blade Runner</ion-item>
-      </ion-list>
-    </ng-template>
+  <div class="events-list" *ngIf="!isLoading">
+    <ion-calendar #calendar lang="en" [events]="data.entries" (onDaySelect)="onDaySelect($event)"></ion-calendar>
+      <div *ngIf="!(eventsList.length > 0); else showList">
+        <p>Events you add will be shown here</p>
+      </div>
+      <ng-template #showList>
+        <ion-list>
+          <ion-list-header>
+            Entries
+          </ion-list-header>
+          <div class="event-list">
+            <ion-item *ngFor="let entry of data.entries">{{entry}}</ion-item>
+          </div>
+        </ion-list>
+      </ng-template>
   </div>
 </ion-content>

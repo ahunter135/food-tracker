@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserProvider } from '../stores/user';
 
 import firebase from 'firebase';
 
@@ -12,7 +13,7 @@ import firebase from 'firebase';
 @Injectable()
 export class HttpProvider {
 
-  constructor() {
+  constructor(private user: UserProvider) {
   }
 
   createAccount(user): Promise<any> {
@@ -21,5 +22,25 @@ export class HttpProvider {
 
   login(user): Promise<any> {
     return firebase.auth().signInWithEmailAndPassword(user.email, user.password);
+  }
+
+  saveUser(): Promise<any> {
+    let database = firebase.database().ref('user-accounts/' + this.user.user.uid).set({
+      email: this.user.user.email,
+      entries: [{
+        date: {
+          year: new Date().getFullYear(),
+          month: new Date().getMonth(),
+          date: new Date().getDate()
+        },
+        text: "This is a sample entry",
+        feeling: 'poor'
+      }]
+    })
+  }
+
+  getUserData() {
+    let database = firebase.database().ref('user-accounts/' + this.user.user.uid);
+    return database.once('value');
   }
 }

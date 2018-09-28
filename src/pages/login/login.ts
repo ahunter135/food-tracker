@@ -62,15 +62,12 @@ export class LoginPage {
   }
 
   ionViewWillLeave() {
-    this.user.store();
-  }
-
-  ionViewDidLeave() {
-    console.log(this.user.user);
+    this.http.saveUser();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    this.loader.dismissLoader();
   }
 
   showSignUpModal() {
@@ -83,8 +80,7 @@ export class LoginPage {
     this.loader.presentLoader();
     this.http.login(this.userData).then((data: any) => {
       this.loader.dismissLoader();
-      this.user.setLoginFlag(true);
-      this.user.set(data);
+      this.user.set();
       this.navCtrl.setRoot(HomePage);
     })
     .catch(e => {

@@ -5,7 +5,6 @@ import { CalendarModule } from 'ionic3-calendar-en';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { AddFormPage } from '../pages/add-form/add-form';
 import { LoadPage } from '../pages/load/load';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginPage } from '../pages/login/login';
@@ -29,7 +28,6 @@ import { UserProvider } from '../providers/stores/user';
   declarations: [
     MyApp,
     HomePage,
-    AddFormPage,
     LoadPage,
     SignUpPage,
     LoginPage
@@ -45,7 +43,6 @@ import { UserProvider } from '../providers/stores/user';
   entryComponents: [
     MyApp,
     HomePage,
-    AddFormPage,
     LoadPage,
     SignUpPage,
     LoginPage

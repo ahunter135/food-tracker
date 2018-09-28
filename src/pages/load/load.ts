@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 
 import { InAppPurchase } from '@ionic-native/in-app-purchase';
 import { Storage } from '@ionic/storage';
@@ -24,12 +24,13 @@ export class LoadPage {
 
   purchases = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loader: LoadProvider, private iap: InAppPurchase, private storage: Storage, private user: UserProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loader: LoadProvider, private iap: InAppPurchase, private storage: Storage, private user: UserProvider, private events: Events) {
   }
 
   ionViewDidLoad() {
     this.loader.createLoader();
     this.loader.presentLoader();
+
     this.iap.restorePurchases()
       .then((result) => {
         //set purchased flag here
@@ -41,17 +42,12 @@ export class LoadPage {
       });
   }
 
-  ionViewDidLeave() {
-    this.loader.dismissLoader();
-  }
-
   async doInitialSetup() {
-    let value = await this.storage.get('LoggedIn');
-    if (value == true) {
-      await this.user.load();
+    this.events.subscribe('user:set', (user) => {
       this.navCtrl.setRoot(HomePage);
-    } else {
+    });
+    this.events.subscribe('user:not-set', (user) => {
       this.navCtrl.setRoot(LoginPage);
-    }
+    });
   }
 }

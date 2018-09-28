@@ -30672,8 +30672,8 @@ ion-calendar .calendar-row .select {
   background: #649173;
   /* fallback for old browsers */
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-gradient(linear, right top, left top, from(#DBD5A4), to(#649173));
-  background: linear-gradient(to left, #DBD5A4, #649173);
+  background: -webkit-gradient(linear, right top, left top, from(#ffffff), to(#7700f7));
+  background: linear-gradient(to left, #ffffff, #7700f7);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
@@ -30681,108 +30681,12 @@ ion-calendar .calendar-row .select {
   background: rgba(255, 255, 255, 0.3);
 }
 
-page-add-form {
-  /* Empty. Add your own CSS if you like */
-  /* Utilities */
-}
-
-page-add-form .toolbar-title.toolbar-title-ios,
-page-add-form .toolbar-title.toolbar-title-md,
-page-add-form .toolbar-title.toolbar-title-wp {
-  color: #FFFFFF;
-}
-
 .toolbar-background {
-  background-color: #DBD5A4;
+  background-color: #7700f7;
 }
 
-page-home [col-1] {
-  -webkit-box-flex: 0;
-  -webkit-flex: 0 0 8.33333%;
-  -ms-flex: 0 0 8.33333%;
-  flex: 0 0 14.285714285714286%;
-  width: 14.285714285714286%;
-  max-width: 14.285714285714286%;
-}
-
-page-home .col {
-  text-align: center;
-  padding: 5px;
-}
-
-page-home .last-month, page-home .next-month {
-  color: #999999;
-  font-size: 90%;
-}
-
-page-home .currentDate, page-home .otherDate {
-  padding: 5px;
-}
-
-page-home .currentDate {
-  font-weight: bold;
-  background-color: red;
-  color: white;
-  border-radius: 30px;
-}
-
-page-home .calendar-header {
-  background-color: #1a732d;
-  color: #FFFFFF;
-  padding: 10px;
-}
-
-page-home .event-bullet {
-  margin: 2px auto;
-  height: 5px;
-  width: 5px;
-  background-color: green;
-  border-radius: 30px;
-}
-
-page-home .selected-date {
-  width: 20px;
-  height: 2px;
-  background-color: blue;
-}
-
-page-home .unselected-date {
-  border: none;
-}
-
-page-home .calendar-body .grid {
-  padding: 0;
-}
-
-page-home .calendar-body .col:last-child {
-  border-right: none;
-}
-
-page-home .calendar-body .calendar-weekday, page-home .calendar-body .calendar-date {
-  text-align: center;
-  margin: 0;
-}
-
-page-home .calendar-body .calendar-weekday {
-  font-weight: bold;
-  border-bottom: solid 1px #1a732d;
-  background-color: #26ab56;
-}
-
-page-home .calendar-body .calendar-date {
-  padding-top: 25px;
-  padding-bottom: 25px;
-  border-top: solid 1px #1a732d;
-  border-bottom: solid 1px #1a732d;
-}
-
-page-home .calendar-body .calendar-days {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-page-home .calendar {
-  padding-top: 15px;
+page-home .event-list ion-item {
+  font-size: 13.5px;
 }
 
 .loader .cssload-container {
@@ -30870,8 +30774,8 @@ page-home .calendar {
   background: #649173;
   /* fallback for old browsers */
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-gradient(linear, right top, left top, from(#DBD5A4), to(#649173));
-  background: linear-gradient(to left, #DBD5A4, #649173);
+  background: -webkit-gradient(linear, right top, left top, from(#ffffff), to(#7700f7));
+  background: linear-gradient(to left, #ffffff, #7700f7);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
