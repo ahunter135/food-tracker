@@ -6,20 +6,42 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <div class="events-list" *ngIf="!isLoading">
-    <ion-calendar #calendar lang="en" [events]="data.entries" (onDaySelect)="onDaySelect($event)"></ion-calendar>
-      <div *ngIf="!(eventsList.length > 0); else showList">
-        <p>Events you add will be shown here</p>
-      </div>
-      <ng-template #showList>
-        <ion-list>
-          <ion-list-header>
-            Entries
-          </ion-list-header>
-          <div class="event-list">
-            <ion-item *ngFor="let entry of data.entries">{{entry}}</ion-item>
-          </div>
-        </ion-list>
-      </ng-template>
+  <div *ngIf="!isLoading">
+    <ion-calendar #calendar lang="en" [events]="entriesDateArray" (onDaySelect)="onDaySelect($event)"></ion-calendar>
+    <ion-list>
+      <ion-list-header>
+        <div *ngIf="(entryList.length > 0); else showDefault">Entries</div>
+        <ng-template #showDefault>Entries you add will be shown here</ng-template>
+      </ion-list-header>
+      <ion-item *ngFor="let entry of entryList">
+        <ion-card>
+          <ion-card-header>
+            {{entry.bms}} BM's
+          </ion-card-header>
+          <ion-card-content text-wrap>
+            {{entry.text}}
+          </ion-card-content>
+          <ion-row>
+              <ion-col>
+                <button ion-button icon-start clear small style="color: #7700f7" (click)="editItem(entry)">
+                  <ion-icon name="ios-hammer"></ion-icon>
+                  <div>Edit</div>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button icon-start clear small color="danger" (click)="deleteItem(entry)">
+                  <ion-icon name="ios-trash"></ion-icon>
+                  <div>Delete</div>
+                </button>
+              </ion-col>
+            </ion-row>
+        </ion-card>
+      </ion-item>
+    </ion-list>
   </div>
+  <ion-fab right bottom>
+    <button ion-fab mini class="fab-button" (click)="addItem();"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>
+<ion-footer>
+</ion-footer>

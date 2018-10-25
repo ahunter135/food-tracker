@@ -1,0 +1,21 @@
+<ion-content padding>
+  <ion-list>
+
+  <ion-item style="padding-bottom: 15px">
+    <ion-label stacked>Food Title</ion-label>
+    <ion-input type="text" [(ngModel)]="item.name" style="height: 50px;"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>
+      <div *ngIf="(feeling === 0); else showOkay">Awful</div>
+      <ng-template #showOkay><div *ngIf="(feeling === 1); else showGreat">Okay</div></ng-template>
+      <ng-template #showGreat><div *ngIf="(feeling === 2);">Great</div></ng-template>
+    </ion-label>
+    <ion-range min="0" max="2" step="1" snaps="true" color="secondary" [(ngModel)]="feeling"></ion-range>
+  </ion-item>
+
+</ion-list>
+  <button ion-button block (click)="submit()">Submit</button>
+  <div style="text-align:center"><button ion-button small outline (click)="dismiss()">Cancel</button></div>
+</ion-content>

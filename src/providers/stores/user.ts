@@ -6,14 +6,17 @@ import firebase from 'firebase';
 @Injectable()
 export class UserProvider {
 
-  user: null;
+  user = null;
   loggedIn: false;
+  items = [];
+  entries = [];
 
   constructor(private storage: Storage) {}
 
-  async set(user) {
-    this.user = user;
+  async set() {
+    this.user = firebase.auth().currentUser;
     this.setLoginFlag(true);
+    this.storage.set('User', this.user);
   }
 
   async get() {
@@ -29,4 +32,8 @@ export class UserProvider {
     this.user = await this.get();
   }
 
+  async clear() {
+    this.user = null;
+    this.loggedIn = null;
+  }
 }

@@ -8,7 +8,7 @@
   <div class="div-padding">
     <ion-row>
       <ion-col>
-        <ion-list inset [@bounceInBottom]="formState">
+        <ion-list inset>
 
           <ion-item>
             <ion-label>Email</ion-label>
@@ -37,12 +37,12 @@
 
     <ion-row>
       <ion-col>
-        <button ion-button class="login-button" (click)="submit()" [@fadeIn]="loginState" [disabled]="disabled">Sign Up</button>
+        <button ion-button class="login-button" (click)="submit()"  [disabled]="disabled">Sign Up</button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <a class="sign-up-button" [@fadeIn]="loginState" (click)="cancelModal()">Cancel</a>
+        <a class="sign-up-button" (click)="cancelModal()">Cancel</a>
       </ion-col>
     </ion-row>
 

@@ -4,10 +4,12 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import firebase from 'firebase';
 
 import { HomePage } from '../pages/home/home';
 import { LoadPage } from '../pages/load/load';
+import { ItemsPage } from '../pages/items/items';
+import { ProfilePage } from '../pages/profile/profile';
+import { LoginPage } from '../pages/login/login';
 
 import { UserProvider } from '../providers/stores/user';
 
@@ -26,7 +28,8 @@ export class MyApp {
   pages: Array<{title: string, component: any, icon: string}>;
 
   user = {
-    email: null
+    email: null,
+    purchased: null
   };
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private fcm: FCM, public events: Events, private storage: Storage, private userData: UserProvider) {
@@ -42,10 +45,11 @@ export class MyApp {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
-        userData.set(user);
-        events.publish('user:not-set', user);
+        userData.set();
+        events.publish('user:set', user);
       } else {
         // No user is signed in.
+        userData.clear();
         events.publish('user:not-set', false);
       }
     });
@@ -54,16 +58,15 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage, icon: 'home' }
+      { title: 'Home', component: HomePage, icon: 'ios-home' },
+      { title: 'Food Items', component: ItemsPage, icon: 'ios-pizza'}
     ];
-
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.splashScreen.hide();
+      // Here you can do any higher level native things you might need
 
       this.fcm.getToken().then(token => {
       });
@@ -79,6 +82,11 @@ export class MyApp {
       this.events.subscribe('user:created', (email) => {
         this.user.email = email;
       });
+      this.events.subscribe('user:purchased', (flag) => {
+        this.user.purchased = flag
+      });
+
+      this.splashScreen.hide();
     });
   }
 
@@ -86,5 +94,20 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  goToProfile() {
+    this.nav.push(ProfilePage);
+  }
+
+  goToSocial() {
+    
+  }
+
+  logout() {
+    firebase.auth().signOut().then(function() {
+      this.navCtrl.setRoot(LoginPage);
+    }).catch(function(error) {
+    });
   }
 }

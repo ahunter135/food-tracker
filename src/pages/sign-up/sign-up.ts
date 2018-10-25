@@ -3,7 +3,6 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { LoadProvider } from '../../providers/load/load';
 import { HttpProvider } from '../../providers/http/http';
-import firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 
 
@@ -17,33 +16,7 @@ import { HomePage } from '../home/home';
  */
 @Component({
   selector: 'page-sign-up',
-  templateUrl: 'sign-up.html',
-  animations: [
-
-    trigger('bounceInBottom', [
-      state('in', style({
-        transform: 'translate3d(0,0,0)'
-      })),
-      transition('void => *', [
-        animate('800ms 50ms ease-in', keyframes([
-          style({ transform: 'translate3d(0,1000px,0)', offset: 0 }),
-          style({ transform: 'translate3d(0,-20px,0)', offset: 0.9 }),
-          style({ transform: 'translate3d(0,0,0)', offset: 1 })
-        ]))
-      ])
-    ]),
-
-    //For login button
-    trigger('fadeIn', [
-      state('in', style({
-        opacity: 1
-      })),
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate('500ms 800ms ease-in')
-      ])
-    ])
-  ]
+  templateUrl: 'sign-up.html'
 })
 export class SignUpPage {
 
@@ -57,18 +30,13 @@ export class SignUpPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private http: HttpProvider, public loader: LoadProvider, private storage: Storage) {
   }
 
-  ionViewDidLoad() {
-  }
-
-  submit() {
+  async submit() {
     this.loader.createLoader();
     this.loader.presentLoader();
     this.http.createAccount(this.user).then((data) => {
-      this.loader.dismissLoader();
-      this.storage.set('LoggedIn', true);
-      this.navCtrl.setRoot(HomePage, {
-        user: data
-      });
+      this.http.createUser(this.user.email, data.user.uid);
+      this.http.sendEmailValidation();
+      this.viewCtrl.dismiss(data);
     })
     .catch(e => {
       this.loader.dismissLoader();
@@ -80,7 +48,7 @@ export class SignUpPage {
     this.viewCtrl.dismiss();
   }
 
-  onKey(event: any, state) { // without type info
+  onKey(event: any, state) { 
     if (state == 'pass') {
       this.user.password = event.target.value;
     } else if (state == 'email') {

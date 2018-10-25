@@ -5,10 +5,14 @@ import { CalendarModule } from 'ionic3-calendar-en';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { AddEntry } from '../pages/home/home';
+import { EditEntry } from '../pages/home/home';
+import { AddItems } from '../pages/items/items';
 import { LoadPage } from '../pages/load/load';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginPage } from '../pages/login/login';
-
+import { ItemsPage } from '../pages/items/items';
+import { ProfilePage } from '../pages/profile/profile';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -18,7 +22,6 @@ import { FCM } from '@ionic-native/fcm';
 import { IonicStorageModule } from '@ionic/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP } from '@ionic-native/http';
-import { GooglePlus } from '@ionic-native/google-plus';
 
 import { LoadProvider } from '../providers/load/load';
 import { HttpProvider } from '../providers/http/http';
@@ -30,7 +33,12 @@ import { UserProvider } from '../providers/stores/user';
     HomePage,
     LoadPage,
     SignUpPage,
-    LoginPage
+    LoginPage,
+    AddEntry,
+    EditEntry,
+    AddItems,
+    ItemsPage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -45,7 +53,12 @@ import { UserProvider } from '../providers/stores/user';
     HomePage,
     LoadPage,
     SignUpPage,
-    LoginPage
+    LoginPage,
+    AddEntry,
+    EditEntry,
+    AddItems,
+    ItemsPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,
@@ -56,7 +69,6 @@ import { UserProvider } from '../providers/stores/user';
     LoadProvider,
     HTTP,
     HttpProvider,
-    GooglePlus,
     UserProvider
   ]
 })

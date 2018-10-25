@@ -16,31 +16,43 @@ export class HttpProvider {
   constructor(private user: UserProvider) {
   }
 
-  createAccount(user): Promise<any> {
+  createAccount(user){
     return firebase.auth().createUserWithEmailAndPassword(user.email, user.password);
   }
+  
+  sendEmailValidation() {
+    let user = firebase.auth().currentUser;
+    user.sendEmailVerification();
+  }
 
-  login(user): Promise<any> {
+  login(user){
     return firebase.auth().signInWithEmailAndPassword(user.email, user.password);
   }
 
-  saveUser(): Promise<any> {
-    let database = firebase.database().ref('user-accounts/' + this.user.user.uid).set({
-      email: this.user.user.email,
-      entries: [{
-        date: {
-          year: new Date().getFullYear(),
-          month: new Date().getMonth(),
-          date: new Date().getDate()
-        },
-        text: "This is a sample entry",
-        feeling: 'poor'
-      }]
-    })
+  createUser(email, uid) {
+    firebase.database().ref('user-accounts/' + uid).set({
+      email: email,
+      entries: [],
+      items: []
+    });
   }
 
   getUserData() {
-    let database = firebase.database().ref('user-accounts/' + this.user.user.uid);
+    let uid = null;
+    if (this.user.user !== null) uid = this.user.user.uid;
+    else return false;
+    let database = firebase.database().ref('user-accounts/' + uid);
     return database.once('value');
+  }
+
+  async updateUser() {
+    let uid = null;
+    if (this.user.user !== null) uid = this.user.user.uid;
+    else return false;
+    firebase.database().ref('user-accounts/' + uid).set({
+      email: this.user.user.email,
+      entries: this.user.entries,
+      items: this.user.items
+    });
   }
 }

@@ -2,20 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 
 import { InAppPurchase } from '@ionic-native/in-app-purchase';
-import { Storage } from '@ionic/storage';
 
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
 
 import { LoadProvider } from '../../providers/load/load';
-import { UserProvider } from '../../providers/stores/user';
 
-/**
- * Generated class for the LoadPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 @Component({
   selector: 'page-load',
   templateUrl: 'load.html',
@@ -24,7 +16,7 @@ export class LoadPage {
 
   purchases = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loader: LoadProvider, private iap: InAppPurchase, private storage: Storage, private user: UserProvider, private events: Events) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loader: LoadProvider, private iap: InAppPurchase, private events: Events) {
   }
 
   ionViewDidLoad() {
@@ -34,17 +26,21 @@ export class LoadPage {
     this.iap.restorePurchases()
       .then((result) => {
         //set purchased flag here
-        this.purchases = result;
+        if (result.length > 0) this.events.publish('user:purchased', true);
+        else this.events.publish('user:purchased', false);
         this.doInitialSetup();
       })
       .catch((err) => {
+        console.log(err);
         this.doInitialSetup();
       });
   }
 
   async doInitialSetup() {
     this.events.subscribe('user:set', (user) => {
-      this.navCtrl.setRoot(HomePage);
+      if (user.emailVerified) this.navCtrl.setRoot(HomePage);
+      else this.navCtrl.setRoot(LoginPage);
+
     });
     this.events.subscribe('user:not-set', (user) => {
       this.navCtrl.setRoot(LoginPage);

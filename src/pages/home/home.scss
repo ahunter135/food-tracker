@@ -1,10 +1,14 @@
 .toolbar-background {
   background-color: #7700f7;
 }
+
 page-home {
   .event-list {
     ion-item {
       font-size: 13.5px;
     }
+  }
+  .fab-button {
+    background-color: #7700f7
   }
 }
