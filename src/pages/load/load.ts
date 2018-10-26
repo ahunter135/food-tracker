@@ -23,17 +23,7 @@ export class LoadPage {
     this.loader.createLoader();
     this.loader.presentLoader();
 
-    this.iap.restorePurchases()
-      .then((result) => {
-        //set purchased flag here
-        if (result.length > 0) this.events.publish('user:purchased', true);
-        else this.events.publish('user:purchased', false);
-        this.doInitialSetup();
-      })
-      .catch((err) => {
-        console.log(err);
-        this.doInitialSetup();
-      });
+    this.doInitialSetup();
   }
 
   async doInitialSetup() {

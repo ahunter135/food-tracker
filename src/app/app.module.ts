@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { CalendarModule } from 'ionic3-calendar-en';
-
+import { IonicApp, IonicErrorHandler, IonicModule, IonicPageModule } from 'ionic-angular';
+import { CalendarModule } from '../calendar/calendar.module';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AddEntry } from '../pages/home/home';
@@ -42,6 +41,7 @@ import { UserProvider } from '../providers/stores/user';
   ],
   imports: [
     BrowserModule,
+    IonicPageModule.forChild(HomePage),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     BrowserAnimationsModule,
