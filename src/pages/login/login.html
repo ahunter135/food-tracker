@@ -12,13 +12,13 @@
         <ion-list inset>
 
           <ion-item>
-            <ion-label>Email</ion-label>
+            <ion-label floating>Email</ion-label>
             <ion-input type="text" required [ngModel]="userData.email" (keyup)="onKey($event, 'user')" autocapitalize="none"></ion-input>
           </ion-item>
 
           <ion-item>
-            <ion-label>Password</ion-label>
-            <ion-input type="password" required minlength="6" [ngModel]="userData.password" (keyup)="onKey($event, 'pass')" ></ion-input>
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" required minlength="6" [ngModel]="userData.password" (keyup)="onKey($event, 'pass')" autocapitalize="none"></ion-input>
           </ion-item>
 
         </ion-list>
@@ -27,12 +27,24 @@
 
     <ion-row>
       <ion-col>
-        <button ion-button class="login-button" (click)="login()">Login</button>
+        <button ion-button round class="login-button" (click)="login()">Login</button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <a class="sign-up-button" (click)="showSignUpModal()">Sign Up</a>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding-top: 25px">
+        <ion-col>
+          <a class="sign-up-button" (click)="showForgotPasswordModal()">Forgot Password?</a>
+        </ion-col>
+      </ion-row>
+    <ion-row>
+      <ion-col>
+          <small style="color: red; text-align: center" [hidden]="emailVerified">
+              Please verify your email before logging in
+          </small>
       </ion-col>
     </ion-row>
 

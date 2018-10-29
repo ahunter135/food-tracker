@@ -34,8 +34,9 @@ export class SignUpPage {
     this.loader.createLoader();
     this.loader.presentLoader();
     this.http.createAccount(this.user).then((data) => {
-      this.http.createUser(this.user.email, data.user.uid);
+      this.http.createUser(this.user.email, data.uid);
       this.http.sendEmailValidation();
+      this.loader.dismissLoader();
       this.viewCtrl.dismiss(data);
     })
     .catch(e => {

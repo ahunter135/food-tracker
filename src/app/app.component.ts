@@ -10,6 +10,8 @@ import { LoadPage } from '../pages/load/load';
 import { ItemsPage } from '../pages/items/items';
 import { ProfilePage } from '../pages/profile/profile';
 import { LoginPage } from '../pages/login/login';
+import { SocialPage } from '../pages/social/social';
+import { InAppPurchase } from '@ionic-native/in-app-purchase';
 
 import { UserProvider } from '../providers/stores/user';
 
@@ -32,7 +34,7 @@ export class MyApp {
     purchased: null
   };
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private fcm: FCM, public events: Events, private storage: Storage, private userData: UserProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private fcm: FCM, public events: Events, private storage: Storage, private userData: UserProvider, public iap: InAppPurchase) {
     firebase.initializeApp({
         apiKey: "AIzaSyCLOlz7uQrEC-HutG9MILNsgMtFE5CyOyU",
         authDomain: "foodtracker-8cd65.firebaseapp.com",
@@ -45,12 +47,10 @@ export class MyApp {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
-        userData.set();
         events.publish('user:set', user);
       } else {
         // No user is signed in.
-        userData.clear();
-        events.publish('user:not-set', false);
+        events.publish('user:not-set', null);
       }
     });
 
@@ -101,7 +101,51 @@ export class MyApp {
   }
 
   goToSocial() {
-    
+    if (this.userData.user.role === 1) {
+      this.iap.restorePurchases()
+    .then(function(data) {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].productId === 'com.ionicframework.tracker210235.upgrade') {
+          this.user.purchased = true;
+          break;
+        } else if (data[i].productId === 'com.ionicframework.tracker210235.social_subscription' || data[i].productId === 'com.ionicframework.tracker210235.social_subscription_2') {
+          this.nav.setRoot(SocialPage);
+          break;
+        }
+      }
+      this.offerPurchase();
+    }).catch(function (err) {
+      console.log(err);
+    })
+    } else {
+      this.nav.setRoot(SocialPage);
+    }
+  }
+
+  offerPurchase() {
+      this.iap.getProducts(['com.ionicframework.tracker210235.social_subscription', 'com.ionicframework.tracker210235.social_subscription_2'])
+      .then(function (products) {
+        if (this.user.purchased) {
+          this.iap.subscribe('com.ionicframework.tracker210235.social_subscription')
+          .then(function (data) {
+            this.nav.setRoot(SocialPage);
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
+        } else {
+          this.iap.subscribe('com.ionicframework.tracker210235.social_subscription_2')
+          .then(function (data) {
+            this.nav.setRoot(SocialPage);
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+      })
   }
 
   logout() {

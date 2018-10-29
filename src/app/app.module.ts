@@ -12,7 +12,10 @@ import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginPage } from '../pages/login/login';
 import { ItemsPage } from '../pages/items/items';
 import { ProfilePage } from '../pages/profile/profile';
-
+import { ResetPassword } from '../pages/login/login';
+import { SocialPage } from '../pages/social/social';
+import { PublicForumPage } from '../pages/public-forum/public-forum';
+import { ConnectionsPage } from '../pages/connections/connections';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -35,6 +38,10 @@ import { UserProvider } from '../providers/stores/user';
     LoginPage,
     AddEntry,
     EditEntry,
+    ResetPassword,
+    SocialPage,
+    PublicForumPage,
+    ConnectionsPage,
     AddItems,
     ItemsPage,
     ProfilePage
@@ -56,6 +63,10 @@ import { UserProvider } from '../providers/stores/user';
     LoginPage,
     AddEntry,
     EditEntry,
+    SocialPage,
+    ResetPassword,
+    PublicForumPage,
+    ConnectionsPage,
     AddItems,
     ItemsPage,
     ProfilePage

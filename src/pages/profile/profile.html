@@ -5,11 +5,60 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-  </ion-navbar>
-</ion-header>
-<ion-content padding>
-  <button ion-button round (click)="logout()">
-    logout
-  </button>
-</ion-content>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon color="white" name="menu"></ion-icon>
+      </button>
+      <ion-buttons end>
+        <button ion-button icon-only [hidden]="showEdit" (click)="showEdit = !showEdit">
+          <ion-icon color="white" name="ios-hammer"></ion-icon>
+        </button>
+        <button ion-button icon-only [hidden]="!showEdit" (click)="submitEdit()">
+            <ion-icon color="white" name="ios-checkmark-circle"></ion-icon>
+          </button>
+    </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+    <ion-content style="background-color: white !important;">
+    <div [hidden]="showEdit">
+        <ion-row padding>
+            <ion-col col-3>
+            </ion-col>
+            <ion-col col-6  >
+                <img src="./assets/imgs/default-avatar.jpg" class="avatar" alt="">
+            </ion-col>
+            <ion-col col-3>
+            </ion-col>
+          </ion-row>
+        
+          <!-- Profile info -->
+          <div padding>
+            <ion-col col-6>
+                <p no-margin no-padding><b>{{user.fullName}}</b></p>
+                <p no-padding no-margin class="info">{{user.myStory}}</p>
+            </ion-col>
+          </div>
+    </div>
+    <div [hidden]="!showEdit">
+        <ion-row padding>
+            <ion-col col-3>
+            </ion-col>
+            <ion-col col-6>
+                <img src="./assets/imgs/default-avatar.jpg" class="avatar" alt="" (click)="selectAvatar();">
+            </ion-col>
+            <ion-col col-3>
+            </ion-col>
+          </ion-row>
+
+          <!-- Profile info -->
+          <div padding>
+              <ion-col col-6>
+                  <ion-label stacked>Full Name</ion-label>
+                  <ion-input type="text" [(ngModel)]="profile.fullName" style="height: 50px;" placeholder="{{user.fullName}}"></ion-input>
+                  <ion-label stacked>My Story</ion-label>
+                  <ion-textarea type="text" [(ngModel)]="profile.myStory" style="height: 50px;" placeholder="{{user.myStory}}"></ion-textarea>
+              </ion-col>
+            </div>
+    </div>
+    </ion-content>
+    

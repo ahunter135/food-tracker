@@ -29,16 +29,20 @@ export class HomePage {
   ionViewWillLoad() {
     this.user = this.userData.user;
     this.events.publish('user:created', this.user.email);
+    if (!this.loader.isLoading) {
+      this.loader.createLoader();
+      this.loader.presentLoader();
+    }
   }
 
   loadEntries() {
     this.userData.entries = this.data.entries;
-    this.loader.dismissLoader();
     this.isLoading = false;
     for (let i = 0; i < this.data.entries.length; i++) {
       this.entriesDateArray.push(this.data.entries[i].date);
       if (this.compareDates(this.data.entries[i].date, this.today)) this.entryList.push(this.data.entries[i]);
     }
+    if (this.loader.isLoading) this.loader.dismissLoader();
   }
 
   clearEntries() {
@@ -53,6 +57,8 @@ export class HomePage {
       if (this.data.entries === undefined || this.data.entries === null) this.data.entries = []; 
       if (this.data.items === undefined || this.data.items === null) this.userData.items = [];
       else this.userData.items = this.data.items;
+      this.userData.user.fullName = this.data.fullName;
+      this.userData.user.myStory = this.data.myStory;
 
       this.loadEntries();
     }

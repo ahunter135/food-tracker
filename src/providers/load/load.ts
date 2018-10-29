@@ -12,7 +12,7 @@ import { LoadingController } from 'ionic-angular';
 export class LoadProvider {
 
   loader = null;
-
+  isLoading = false;
   constructor(public loadingCtrl: LoadingController) {
     
   }
@@ -29,10 +29,12 @@ export class LoadProvider {
 
   presentLoader() {
     this.loader.present();
+    this.isLoading = true;
   }
 
   dismissLoader() {
     this.loader.dismiss();
+    this.isLoading = false;
   }
 
 }

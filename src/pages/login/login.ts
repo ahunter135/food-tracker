@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ViewController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { HttpProvider } from '../../providers/http/http';
 import { LoadProvider } from '../../providers/load/load';
 import { UserProvider } from '../../providers/stores/user';
-
+import firebase from 'firebase';
 
 import { SignUpPage } from '../sign-up/sign-up';
 import { HomePage } from '../home/home';
@@ -28,12 +28,23 @@ export class LoginPage {
     password: ''
   }
 
-  constructor(public navCtrl: NavController, private storage: Storage, public navParams: NavParams, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, private user: UserProvider) {
+  emailVerified = true;
+
+  constructor(public navCtrl: NavController, private storage: Storage, public navParams: NavParams, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, private user: UserProvider, public loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-    this.loader.dismissLoader();
+    if (this.user.user) {
+      if (this.user.user.emailVerified) {
+        this.loader.dismissLoader();
+        this.navCtrl.setRoot(HomePage)
+      } else {
+        this.emailVerified = false;
+        this.loader.dismissLoader();
+      }
+    } else {
+      this.loader.dismissLoader();
+    }
   }
 
   showSignUpModal() {
@@ -44,15 +55,25 @@ export class LoginPage {
     });
   }
 
+  showForgotPasswordModal() {
+    const resetModal = this.modalCtrl.create(ResetPassword);
+    resetModal.present();
+    resetModal.onDidDismiss(data => {
+      
+    });
+  }
+
   login() {
-    this.loader.createLoader();
-    this.loader.presentLoader();
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles'
+    });
+    loading.present();
     this.http.login(this.userData).then((data: any) => {
-      if (data.user.emailVerified) {
+      if (data.emailVerified) {
         this.user.set();
+        loading.dismiss();
         this.navCtrl.setRoot(HomePage);
       } else {
-        this.loader.dismissLoader();
         alert("Please verify email before logging in");
       }
     })
@@ -69,5 +90,35 @@ export class LoginPage {
       this.userData.password = event.target.value;
     }
   }
+
+}
+
+@Component({
+  selector: 'reset-password',
+  templateUrl: 'resetPassword.html'
+})
+export class ResetPassword {
+ userData = {
+   email: ''
+ }
+ constructor(public viewCtrl: ViewController, params: NavParams) {
+
+ }
+
+ async submit() {
+   await firebase.auth().sendPasswordResetEmail(this.userData.email);
+   alert("Please check email to reset password");
+   this.dismiss();
+ }
+
+ dismiss() {
+   this.viewCtrl.dismiss();
+ }
+
+ onKey(event: any, state) { 
+  if (state == 'user') {
+    this.userData.email = event.target.value;
+  }
+}
 
 }

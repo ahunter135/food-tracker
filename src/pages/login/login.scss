@@ -5,12 +5,7 @@
     -webkit-backface-visibility: hidden;
     -webkit-transform:translate3d(0,0,0);
     ion-content {
-      background:: #649173;
-      /* fallback for old browsers */
-      background: -webkit-linear-gradient(to left, #7700f7, #ffffff);
-      /* Chrome 10-25, Safari 5.1-6 */
-      background: linear-gradient(to left, #ffffff, #7700f7);
-      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      background: #cfa2ff;
     }
 
     .div-padding {
@@ -35,12 +30,12 @@
     }
 
     ion-item {
-      border-radius: 30px !important;
       padding-left: 10px !important;
       margin-bottom: 10px;
-      background-color: #f6f6f6;
-      opacity: 0.7;
+      background-color: #cfa2ff;
+      opacity: 0.9;
       font-size: 0.9em;
+      color: white;
     }
 
     ion-list {
@@ -49,24 +44,16 @@
 
     .login-button {
       width: 100%;
-      border-radius: 30px;
       font-size: 0.9em;
-      border: 1px solid #fff;
+      border: 0.2px solid #cfa2ff;
       background-color: #39acdc;
-    }
-
-    .login-with-google-button {
-      width: 33%;
-      background-color: #ff0000;
-      border: 1px solid #fff;
-      border-radius: 30px;
-      font-size: 0.6em;
     }
 
     .sign-up-button {
       border-radius: 30px;
       font-size: 0.9em;
       font-weight: bold;
+      color: white;
     }
   }
 }
