@@ -190,7 +190,6 @@ export class HttpProvider {
             unique_array.push(allArray[i])
         }
     }
-    console.log(unique_array);
     return unique_array;
   }
 }

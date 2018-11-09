@@ -64,7 +64,6 @@ export class LoadPage {
     this.user.entries = (temp.val().entries === undefined ? [] : temp.val().entries);
     this.user.fullName = temp.val().fullName;
     this.user.myStory = temp.val().myStory;
-    this.user.token = temp.val().token;
     this.user.role = temp.val().role;
     this.user.email = this.user.user.email;
 

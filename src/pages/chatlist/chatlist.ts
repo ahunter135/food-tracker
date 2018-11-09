@@ -24,7 +24,6 @@ export class ChatlistPage {
 
   async ionViewWillEnter() {
     this.chats = [];
-    console.log(this.user);
     for (let i = 0; i < this.user.chatUsers.length; i++) {
       for (let j = 0; j < this.user.chats.length; j++) {
         if (this.user.chats[j].uid === this.user.chatUsers[i]) {
@@ -34,7 +33,6 @@ export class ChatlistPage {
         }
       }
     }
-    console.log(this.chats);
   }
 
   sendMessage(chat) {

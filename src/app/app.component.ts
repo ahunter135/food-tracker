@@ -77,6 +77,7 @@ export class MyApp {
 
       this.fcm.getToken().then(token => {
         this.userData.token = token;
+        console.log(token);
       });
 
       this.fcm.onNotification().subscribe(data => {

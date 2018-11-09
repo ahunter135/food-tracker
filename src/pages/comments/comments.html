@@ -44,7 +44,7 @@
 <ion-footer class="message-footer">
   <ion-toolbar class="message-toolbar" color="light">
     <ion-item>
-        <ion-textarea [(ngModel)]="comment.text" class="message-input" placeholder="Enter Comment Here" text-start></ion-textarea>
+        <ion-textarea [(ngModel)]="comment.text" class="message-input" placeholder="Enter Comment Here" text-start autocomplete="on" autocorrect="on"></ion-textarea>
     </ion-item>
     <ion-buttons end>
         <button ion-button icon-only (click)="postComment()">
