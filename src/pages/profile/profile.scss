@@ -1,12 +1,23 @@
 page-profile {
+    
     /* Profile avatar */
     .avatar {
-      border-radius: 100%;
+      border-radius: 50%;
+      position: absolute;
+      width: 100px;
+      height: 100px;
     }
   
     /* Small for notifications */
     .badge-container {
       position: relative;
+    }
+
+    .break {
+      height: 1px; 
+      margin-top: 8px;
+      margin-bottom: 8px;
+      background-color: #eaeff5;
     }
   
     .custom-badge {
@@ -38,6 +49,33 @@ page-profile {
   
     .edit-button:active {
       border-color: #dce2ed;
+    }
+    
+    ion-input, ion-textarea {
+      padding-left: 10px;
+      opacity: 0.5;
+      border: 1px solid #eaeff5;
+    }
+
+    /* Profile edit button */
+  .edit-button {
+    background: #fff;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    border-radius: 3px;
+    padding: 5px;
+    font-weight: bold;
+    width: 90%;
+    margin-right: 30px;
+  }
+
+    .post-header {
+      text-align: center;
+    }
+
+    .card-body {
+      align-content: center;
+      align-self: center;
     }
   }
   

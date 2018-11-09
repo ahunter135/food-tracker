@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, Pipe } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule, IonicPageModule } from 'ionic-angular';
 import { CalendarModule } from '../calendar/calendar.module';
 import { MyApp } from './app.component';
@@ -18,16 +18,31 @@ import { PublicForumPage } from '../pages/public-forum/public-forum';
 import { ConnectionsPage } from '../pages/connections/connections';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AddPost } from '../pages/public-forum/public-forum';
+import { CommentsPage } from '../pages/comments/comments';
+import { AppRate } from '@ionic-native/app-rate';
+import { UserProfilePage } from '../pages/user-profile/user-profile';
 
 import { InAppPurchase } from '@ionic-native/in-app-purchase';
 import { FCM } from '@ionic-native/fcm';
 import { IonicStorageModule } from '@ionic/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP } from '@ionic-native/http';
-
+import { Crashlytics, Answers } from '@ionic-native/fabric';
 import { LoadProvider } from '../providers/load/load';
 import { HttpProvider } from '../providers/http/http';
 import { UserProvider } from '../providers/stores/user';
+import { ForumProvider } from '../providers/stores/forum';
+
+import { RateServiceProvider } from '../providers/rate-service/rate-service';
+import { Camera } from '@ionic-native/camera';
+import { ChatPage } from '../pages/chat/chat';
+import { ChatProvider } from '../providers/chat/chat';
+import { PipesModule } from '../pipes/pipes.module';
+import { SearchPage } from '../pages/search/search';
+import { NativeAudio } from '@ionic-native/native-audio';
+import { FirebaseConfig } from '@ionic-native/firebase-config';
+import { ChatlistPage } from '../pages/chatlist/chatlist';
 
 @NgModule({
   declarations: [
@@ -43,8 +58,14 @@ import { UserProvider } from '../providers/stores/user';
     PublicForumPage,
     ConnectionsPage,
     AddItems,
+    CommentsPage,
+    UserProfilePage,
+    AddPost,
     ItemsPage,
-    ProfilePage
+    ProfilePage,
+    ChatPage,
+    SearchPage,
+    ChatlistPage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +73,8 @@ import { UserProvider } from '../providers/stores/user';
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     BrowserAnimationsModule,
-    CalendarModule
+    CalendarModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -67,9 +89,15 @@ import { UserProvider } from '../providers/stores/user';
     ResetPassword,
     PublicForumPage,
     ConnectionsPage,
+    CommentsPage,
     AddItems,
+    AddPost,
     ItemsPage,
-    ProfilePage
+    UserProfilePage,
+    ProfilePage,
+    ChatPage,
+    SearchPage,
+    ChatlistPage
   ],
   providers: [
     StatusBar,
@@ -80,7 +108,16 @@ import { UserProvider } from '../providers/stores/user';
     LoadProvider,
     HTTP,
     HttpProvider,
-    UserProvider
+    UserProvider,
+    RateServiceProvider,
+    ForumProvider,
+    Camera,
+    AppRate,
+    Crashlytics,
+    Answers,
+    ChatProvider,
+    NativeAudio,
+    FirebaseConfig
   ]
 })
 export class AppModule {}

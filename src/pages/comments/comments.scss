@@ -1,0 +1,17 @@
+page-comments {
+    .message-input {
+        background-color: #ffffff !important;
+        opacity: 0.9;
+        border-radius: 30px !important;
+        height: 5px;
+        width: 5px !important;
+    }
+
+    ion-item {
+        border-radius: 30px !important;
+    }
+
+    .message-toolbar {
+        color: secondary;
+    }
+}

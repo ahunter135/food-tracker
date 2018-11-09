@@ -43,7 +43,6 @@ scroll-content{
 }
 
 .round {
-  border-radius: 50%;
 }
 
 .transparent-header {
@@ -73,8 +72,9 @@ scroll-content{
 // Sidemenu with avatar
 #menu-avatar {
   .user-avatar {
-    max-width: 125px;height: 125px;
-    padding: .5em;
+    border-radius: 50%;
+      width: 100px;
+      height: 100px;
   }
   h3,
   .label {
@@ -91,4 +91,9 @@ scroll-content{
   .menu-inner {
     background: rgba(255, 255, 255, .3);
   }
+
+}
+
+ion-content {
+  background-color: #fffff9;
 }

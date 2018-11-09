@@ -1,0 +1,13 @@
+page-user-profile {
+    .connection-button {
+        text-align: center;
+    }
+
+    /* Profile avatar */
+    .avatar {
+        border-radius: 50%;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+      }
+}

@@ -5,14 +5,52 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>PublicForumPage</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon color="white" name="menu"></ion-icon>
+      </button>
+    </ion-navbar>
+  </ion-header>
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+  <ion-list>
+      <ion-item *ngFor="let post of posts">
+          <ion-card>
+            <ion-item (click)="showUserProfile(post)">
+              <ion-avatar item-start>
+                <img src="{{post.avatar_image}}" onerror="this.src='./assets/imgs/default-avatar.jpg'"/>
+              </ion-avatar>
+              <h2>{{post.user_name}}</h2>
+              <p>{{post.posted}}</p>
+            </ion-item>
+            <ion-card-content text-wrap>
+              {{post.text}}
+            </ion-card-content>
+            <ion-row>
+                <ion-col>
+                  <button ion-button icon-start clear small (click)="likePost(post)">
+                    <ion-icon name="thumbs-up"></ion-icon>
+                    <div>{{post.likes}} Likes</div>
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button icon-start clear small (click)="addComment(post)">
+                    <ion-icon name="text"></ion-icon>
+                    <div >{{post.comment_amount}} Comments</div>
+                  </button>
+                </ion-col>
+                <ion-col center text-center>
+                  <ion-note>
+                      {{post.time_since}}
+                  </ion-note>
+                </ion-col>
+              </ion-row>
+          </ion-card>
+        </ion-item>
+  </ion-list>
+    <ion-fab right bottom>
+        <button ion-fab mini class="fab-button" (click)="addPost();"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>

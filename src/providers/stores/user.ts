@@ -6,10 +6,23 @@ import firebase from 'firebase';
 @Injectable()
 export class UserProvider {
 
+  avatar_image;
+  connections;
+  myStory;
+  fullName;
   user = null;
   loggedIn: false;
   items = [];
   entries = [];
+  token = null;
+  notifications = {
+    clicked: false,
+    content: null
+  };
+  role;
+  chats = [];
+  chatUsers = [];
+  email;
 
   constructor(private storage: Storage) {}
 

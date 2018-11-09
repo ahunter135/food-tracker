@@ -24,7 +24,10 @@ $app-direction: ltr;
 $label-md-text-color-focused: #FFFFFF;
 $label-md-text-color: #FFFFFF;
 $text-input-md-highlight-color: #FFFFFF;
-
+$text-input-highlight-color-valid: #ffffff !important;
+$toolbar-md-title-text-color: #ffffff;
+$searchbar-md-padding-top: 0px;
+$searchbar-md-input-box-shadow: 0 0px 0px 0 rgba(255, 255, 255, 255), 0 0px 0px 0px rgba(255, 255, 255, 255);
 
 // Named Color Variables
 // --------------------------------------------------
@@ -35,7 +38,7 @@ $text-input-md-highlight-color: #FFFFFF;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  primary:    #cfa2ff,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,

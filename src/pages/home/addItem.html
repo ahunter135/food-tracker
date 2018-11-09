@@ -2,12 +2,12 @@
   <ion-list>
 
   <ion-item style="padding-bottom: 15px">
-    <ion-label stacked>Entry Text</ion-label>
-    <ion-textarea [(ngModel)]="entry.text" type="text" style="height: 50px;"></ion-textarea>
+    <ion-label style="color: black" stacked>Entry Text</ion-label>
+    <ion-textarea rows="10" [(ngModel)]="entry.text" type="text" style="opacity: 0.5; border: 1px solid #eaeff5;"></ion-textarea>
   </ion-item>
 
   <ion-item style="padding-bottom: 15px">
-    <ion-label>BMs</ion-label>
+    <ion-label style="color: black" >BMs</ion-label>
     <ion-select [(ngModel)]="entry.bms" interface="popover">
       <ion-option value="0">0</ion-option>
       <ion-option value="1">1</ion-option>
@@ -20,10 +20,20 @@
       <ion-option value="8">8</ion-option>
       <ion-option value="9">9</ion-option>
       <ion-option value="10">10</ion-option>
+      <ion-option value="11">11</ion-option>
+      <ion-option value="12">12</ion-option>
+      <ion-option value="13">13</ion-option>
+      <ion-option value="14">14</ion-option>
+      <ion-option value="15">15</ion-option>
+      <ion-option value="16">16</ion-option>
+      <ion-option value="17">17</ion-option>
+      <ion-option value="18">18</ion-option>
+      <ion-option value="19">19</ion-option>
+      <ion-option value="20">20</ion-option>
     </ion-select>
   </ion-item>
 
 </ion-list>
-  <button ion-button block (click)="submit()">Submit</button>
+  <button ion-button block style="color: white" (click)="submit()">Submit</button>
   <div style="text-align:center"><button ion-button small outline (click)="dismiss()">Cancel</button></div>
 </ion-content>

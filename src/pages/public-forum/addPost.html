@@ -1,0 +1,13 @@
+<ion-content padding>
+        <ion-list>
+      
+        <ion-item style="padding-bottom: 15px">
+          <ion-label style="color: black; padding-bottom: 5px" stacked>Post Text</ion-label>
+          <ion-textarea rows="10" [(ngModel)]="entry.text" type="text" style="opacity: 0.5; border: 1px solid #eaeff5; padding: 5px"></ion-textarea>
+        </ion-item>
+      
+      </ion-list>
+    <button ion-button block style="color: white" (click)="submit()">Submit</button>
+    <div style="text-align:center"><button ion-button small outline (click)="dismiss()">Cancel</button></div>
+</ion-content>
+      

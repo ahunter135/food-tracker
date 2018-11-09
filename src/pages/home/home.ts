@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, Events, ViewController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { UserProvider } from '../../providers/stores/user';
 import { HttpProvider } from '../../providers/http/http';
 import { LoadProvider } from '../../providers/load/load';
 import { UUID } from 'angular2-uuid';
+import { RateServiceProvider } from '../../providers/rate-service/rate-service';
 
 @Component({
   selector: 'page-home',
@@ -23,24 +25,22 @@ export class HomePage {
   };
   selectedDate = this.today;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public modalCtrl: ModalController, private userData: UserProvider, private http: HttpProvider, public loader: LoadProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public modalCtrl: ModalController, private userData: UserProvider, private http: HttpProvider, public loader: LoadProvider, public rateService: RateServiceProvider, private storage: Storage) {
   }
 
   ionViewWillLoad() {
-    this.user = this.userData.user;
-    this.events.publish('user:created', this.user.email);
-    if (!this.loader.isLoading) {
-      this.loader.createLoader();
-      this.loader.presentLoader();
-    }
+    this.user = this.userData;
+  }
+
+  async ionViewDidLoad() {
+    this.loadEntries();
   }
 
   loadEntries() {
-    this.userData.entries = this.data.entries;
     this.isLoading = false;
-    for (let i = 0; i < this.data.entries.length; i++) {
-      this.entriesDateArray.push(this.data.entries[i].date);
-      if (this.compareDates(this.data.entries[i].date, this.today)) this.entryList.push(this.data.entries[i]);
+    for (let i = 0; i < this.user.entries.length; i++) {
+      this.entriesDateArray.push(this.user.entries[i].date);
+      if (this.compareDates(this.user.entries[i].date, this.today)) this.entryList.push(this.user.entries[i]);
     }
     if (this.loader.isLoading) this.loader.dismissLoader();
   }
@@ -50,24 +50,10 @@ export class HomePage {
     this.entriesDateArray = [];
   }
 
-  async ionViewDidLoad() {
-    let temp = await this.http.getUserData();
-    if (temp) {
-      this.data = temp.val();
-      if (this.data.entries === undefined || this.data.entries === null) this.data.entries = []; 
-      if (this.data.items === undefined || this.data.items === null) this.userData.items = [];
-      else this.userData.items = this.data.items;
-      this.userData.user.fullName = this.data.fullName;
-      this.userData.user.myStory = this.data.myStory;
-
-      this.loadEntries();
-    }
-  }
-
   onDaySelect(event) {
     this.entryList = [];
-    for (let i = 0; i < this.data.entries.length; i++) {
-      if (this.compareDates(this.data.entries[i].date, event)) this.entryList.push(this.data.entries[i]);
+    for (let i = 0; i < this.user.entries.length; i++) {
+      if (this.compareDates(this.user.entries[i].date, event)) this.entryList.push(this.user.entries[i]);
     }
     this.selectedDate = event;
   }
@@ -82,6 +68,7 @@ export class HomePage {
     addItemModal.onDidDismiss(data => {
       this.clearEntries();
       this.loadEntries();
+      if (this.loader.isLoading) this.loader.dismissLoader();
     });
   }
 
@@ -91,13 +78,14 @@ export class HomePage {
     editItemModal.onDidDismiss(data => {
       this.clearEntries();
       this.loadEntries();
+      if (this.loader.isLoading) this.loader.dismissLoader();
     });
   }
 
   deleteItem(entry) {
-    for (let i = 0; i < this.userData.entries.length; i++) {
-      if (this.userData.entries[i].id === entry.id) {
-        this.userData.entries.splice(i, 1);
+    for (let i = 0; i < this.user.entries.length; i++) {
+      if (this.user.entries[i].id === entry.id) {
+        this.user.entries.splice(i, 1);
         this.http.updateUser();
         this.clearEntries();
         this.loadEntries();
@@ -118,7 +106,7 @@ export class AddEntry {
     bms: 0,
     date: {}
   }
- constructor(public viewCtrl: ViewController, params: NavParams, public userData: UserProvider, private http: HttpProvider) {
+ constructor(public viewCtrl: ViewController, params: NavParams, public userData: UserProvider, private http: HttpProvider, public loader: LoadProvider) {
    this.entry.date = {
      date: params.get('today').date,
      month: params.get('today').month,
@@ -126,10 +114,13 @@ export class AddEntry {
    }
  }
 
- submit() {
+ async submit() {
+   this.loader.createLoader();
+   this.loader.presentLoader();
    this.entry.id = UUID.UUID();
    this.userData.entries.push(this.entry);
    this.http.updateUser();
+   
    this.viewCtrl.dismiss();
  }
 
@@ -150,11 +141,13 @@ export class EditEntry {
     bms: 0,
     date: {}
   }
- constructor(public viewCtrl: ViewController, params: NavParams, public userData: UserProvider, private http: HttpProvider) {
+ constructor(public viewCtrl: ViewController, params: NavParams, public userData: UserProvider, private http: HttpProvider, public loader: LoadProvider) {
    this.entry = params.get('entry');
  }
 
  submit() {
+  this.loader.createLoader();
+  this.loader.presentLoader();
   for (let i = 0; i < this.userData.entries.length; i++) {
     if (this.userData.entries[i].id === this.entry.id) {
       this.userData.entries[i] = this.entry;

@@ -2,11 +2,7 @@
 .md {
   page-sign-up {    
     ion-content {
-      background:: #649173;
-      /* fallback for old browsers */
-      background: -webkit-linear-gradient(to left, #649173, #DBD5A4);
-      /* Chrome 10-25, Safari 5.1-6 */
-      background: linear-gradient(to left, #DBD5A4, #649173);
+      background: #cfa2ff;
       /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
 
@@ -44,12 +40,15 @@
       margin: 0;
     }
 
+    ion-label {
+      color: black !important;
+    }
+
     .login-button {
       width: 100%;
-      border-radius: 30px;
       font-size: 0.9em;
-      border: 1px solid #fff;
-      background-color: #cfa2ff;
+      border: 0.9px solid #afafaf;
+      background-color: #afcdfa;
     }
 
     .sign-up-button {

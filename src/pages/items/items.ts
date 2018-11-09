@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, ViewController, I
 import { UserProvider } from '../../providers/stores/user';
 import { HttpProvider } from '../../providers/http/http';
 import { UUID } from 'angular2-uuid';
+import { LoadProvider } from '../../providers/load/load';
 
 
 /**
@@ -20,7 +21,7 @@ export class ItemsPage {
 
   showDelete = false;
   itemList = []
-  constructor(public navCtrl: NavController, public navParams: NavParams, public userData: UserProvider, public modalCtrl: ModalController, private http: HttpProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public userData: UserProvider, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider) {
   }
 
   loadItems() {
@@ -45,10 +46,13 @@ export class ItemsPage {
     addItemModal.onDidDismiss(data => {
       this.clearItems();
       this.loadItems();
+      if (this.loader.isLoading) this.loader.dismissLoader();
     });
   }
 
   removeItem(item) {
+    this.loader.createLoader();
+    this.loader.presentLoader();
     for (let i = 0; i < this.userData.items.length; i++) {
       if (this.userData.items[i].id === item.id) {
         this.userData.items.splice(i, 1);
@@ -58,6 +62,7 @@ export class ItemsPage {
         break;
       }
     }
+    if (this.loader.isLoading) this.loader.dismissLoader();
   }
 }
 
@@ -74,11 +79,13 @@ export class AddItems {
   }
   text = '';
   feeling = 0;
- constructor(public viewCtrl: ViewController, public userData: UserProvider, private http: HttpProvider) {
+ constructor(public viewCtrl: ViewController, public userData: UserProvider, private http: HttpProvider, public loader: LoadProvider) {
   
  }
 
  submit() {
+   this.loader.createLoader();
+   this.loader.presentLoader();
    if (this.feeling === 0 ) {
      this.item.feeling = 'Awful';
      this.item.icon = 'alert';

@@ -9,6 +9,8 @@ import firebase from 'firebase';
 
 import { SignUpPage } from '../sign-up/sign-up';
 import { HomePage } from '../home/home';
+import { ForumProvider } from '../../providers/stores/forum';
+import { Answers } from '@ionic-native/fabric';
 
 
 /**
@@ -30,21 +32,11 @@ export class LoginPage {
 
   emailVerified = true;
 
-  constructor(public navCtrl: NavController, private storage: Storage, public navParams: NavParams, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, private user: UserProvider, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, private storage: Storage, public navParams: NavParams, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, private user: UserProvider, public loadingCtrl: LoadingController, public forum: ForumProvider, private answers: Answers) {
   }
 
   ionViewDidLoad() {
-    if (this.user.user) {
-      if (this.user.user.emailVerified) {
-        this.loader.dismissLoader();
-        this.navCtrl.setRoot(HomePage)
-      } else {
-        this.emailVerified = false;
-        this.loader.dismissLoader();
-      }
-    } else {
-      this.loader.dismissLoader();
-    }
+    if (this.loader.isLoading) this.loader.dismissLoader();
   }
 
   showSignUpModal() {
@@ -72,15 +64,33 @@ export class LoginPage {
       if (data.emailVerified) {
         this.user.set();
         loading.dismiss();
+        this.answers.sendLogIn();
         this.navCtrl.setRoot(HomePage);
       } else {
         alert("Please verify email before logging in");
+        loading.dismiss();
       }
     })
     .catch(e => {
-      this.loader.dismissLoader();
+      loading.dismiss();
       alert(e.message);
     });
+  }
+
+  loginWithGoogle() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles'
+    });
+    loading.present();
+    let provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      let token = result.credential.accessToken;
+      this.user.set();
+      loading.dismiss();
+      alert(JSON.stringify(this.user.user));
+    }).catch(function(error) {
+      alert(JSON.stringify(error));
+    })
   }
 
   onKey(event: any, state) { 
