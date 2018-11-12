@@ -55,6 +55,15 @@ export class HttpProvider {
     
   }
 
+  getFreeWeekend() {
+    let self = this;
+    let database = this.databaseRef.ref('free-weekend');
+    database.on('value', async function(snapshot) {
+      console.log("HERE");
+      self.events.publish('free:weekend', snapshot);
+    })
+  }
+
   getOtherUserData(uid) {
     let database = this.databaseRef.ref('user-accounts/'+uid);
     return database.once('value');

@@ -77,7 +77,6 @@ export class MyApp {
 
       this.fcm.getToken().then(token => {
         this.userData.token = token;
-        console.log(token);
       });
 
       this.fcm.onNotification().subscribe(data => {
@@ -90,7 +89,6 @@ export class MyApp {
       });
       this.nativeAudio.preloadSimple('message', 'assets/sounds/message.mp3').catch(err => console.log());
       this.nativeAudio.preloadSimple('post', 'assets/sounds/message.mp3').catch(err => console.log);
-
 
       this.events.subscribe('user:created', (email) => {
         this.user.email = email;
@@ -137,7 +135,8 @@ export class MyApp {
     let iap = new InAppPurchase;
     let purchased = false;
     let subscribed = false;
-    if (this.userData.user.role === 1) {
+
+    if (this.userData.role === 1 && !this.userData.freeWeekend) {
       await iap.restorePurchases()
       .then(function(data) {
         for (let i = 0; i < data.length; i++) {

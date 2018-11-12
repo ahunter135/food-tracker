@@ -29,10 +29,6 @@ export class PublicForumPage {
     let addPostModal = this.modalCtrl.create(AddPost);
     addPostModal.present();
     addPostModal.onDidDismiss(async data => {
-      await this.http.getForumData().then(async (data) => {
-        let dataArray = await this.forum.convertDataToArray(data);
-        this.forum.setPosts(dataArray);
-      })
       this.posts = this.forum.posts;
       this.configurePosts();
     });
@@ -108,8 +104,8 @@ export class AddPost {
 
   entry = {
     id: '',
-    avatar_image: (this.user.user.avatar_image ? this.user.user.avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b'),
-    user_name: this.user.user.fullName,
+    avatar_image: (this.user.avatar_image ? this.user.avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b'),
+    user_name: this.user.fullName,
     uid: '',
     text: '',
     comments: [],

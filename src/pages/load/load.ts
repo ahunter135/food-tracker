@@ -56,12 +56,20 @@ export class LoadPage {
     });
   }
 
+  async freeWeekend() {
+    this.events.subscribe('free:weekend', async (flag) => {
+      this.user.freeWeekend = flag.val();
+    });
+  }
+
   async loadUserData(user) {
     this.user.user = user;
     await this.http.getForumData();
     this.loadForum();
     this.loadProgress += 5;
     
+    await this.http.getFreeWeekend();
+    this.freeWeekend();
     
     await this.http.getUserConnections();
     this.getUserConnections();

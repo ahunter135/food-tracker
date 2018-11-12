@@ -23,6 +23,7 @@ export class UserProvider {
   chats = [];
   chatUsers = [];
   email;
+  freeWeekend = false;
 
   constructor(private storage: Storage) {}
 
