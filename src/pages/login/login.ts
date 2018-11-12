@@ -11,6 +11,7 @@ import { SignUpPage } from '../sign-up/sign-up';
 import { HomePage } from '../home/home';
 import { ForumProvider } from '../../providers/stores/forum';
 import { Answers } from '@ionic-native/fabric';
+import { LoadPage } from '../load/load';
 
 
 /**
@@ -65,7 +66,7 @@ export class LoginPage {
         this.user.set();
         loading.dismiss();
         this.answers.sendLogIn();
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot(LoadPage);
       } else {
         alert("Please verify email before logging in");
         loading.dismiss();

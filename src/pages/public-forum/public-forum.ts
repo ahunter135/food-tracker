@@ -82,10 +82,6 @@ export class PublicForumPage {
   }
 
   async doRefresh(refresher) {
-    await this.http.getForumData().then(async (data) => {
-      let dataArray = await this.forum.convertDataToArray(data);
-      this.forum.setPosts(dataArray);
-    })
     this.posts = this.forum.posts;
     this.configurePosts();
     refresher.complete();

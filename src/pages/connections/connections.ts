@@ -22,18 +22,21 @@ export class ConnectionsPage {
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public user: UserProvider, private http: HttpProvider, public loader: LoadProvider, public modalCtrl: ModalController) {
   }
 
-  async ionViewDidLoad() {
+  async ionViewWillEnter() {
     for (let i = 0; i < this.user.connections.length; i++) {
-      let avatar = await this.http.getUserAvatar(this.user.connections[i].connectionUID);
-      this.user.connections[i].avatar_image = (avatar.val() !== null ? avatar.val().avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b');
+      if (this.user.connections[i].accepted || this.user.connections[i].accepted === undefined) {
+        let avatar = await this.http.getUserAvatar(this.user.connections[i].connectionUID);
+        this.user.connections[i].avatar_image = (avatar.val() !== null ? avatar.val().avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b');
+        this.connections.push(this.user.connections[i]);
+      }
     }
-    this.connections = this.user.connections;
   }
 
   async acceptConnectionRequest(connection) {
     this.loader.createLoader();
     this.loader.presentLoader();
     connection.accepted = true;
+    delete connection.avatar_image;
     await this.http.replyToConnectionRequest(connection);
     this.loader.dismissLoader();
   }
@@ -42,6 +45,7 @@ export class ConnectionsPage {
     this.loader.createLoader();
     this.loader.presentLoader();
     connection.accepted = false;
+    delete connection.avatar_image;
     await this.http.replyToConnectionRequest(connection);
     let index = this.connections.indexOf(connection);
     this.connections.splice(index, 1);

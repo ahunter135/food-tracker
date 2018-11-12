@@ -25,7 +25,6 @@ export class UserProfilePage {
     fullName: '',
     myStory: '',
     avatar_image: null,
-    uid: '',
     token: null
   };
   posts = [];
@@ -45,12 +44,12 @@ export class UserProfilePage {
     let data = await this.http.getOtherUserData(this.uid);
     
     this.user = data.val();
-    console.log(this.user);
     for (let i = 0; i < this.userData.connections.length; i++) {
-      if (this.userData.connections[i].uid === this.user.uid) {
+      if (this.userData.connections[i].connectionUID === this.uid) {
         if (this.userData.connections[i].accepted === true || this.userData.connections[i].accepted === undefined) {
           this.connected = true;
         }
+        this.connectionKey;
       }
     }
     let avatar = await this.http.getUserAvatar(this.uid);
@@ -64,8 +63,11 @@ export class UserProfilePage {
     this.connectionCount = 0;
     let connection = await this.http.getOtherUserConnectionData(this.uid);
     for (let key in connection.val()) {
-      this.connectionCount++;
-      this.connectionKey = key;
+      if (connection.val()[key].accepted) this.connectionCount++;
+      if ((connection.val()[key].accepted || connection.val()[key].accepted === undefined) && connection.val()[key].connectionUID === this.userData.user.uid) {
+        this.connectionKey = key;
+        this.connected = true;
+      }
     }
   }
 
@@ -95,7 +97,7 @@ export class UserProfilePage {
     this.loader.presentLoader();
     if (!this.connected) {
       //this.http.sendConnectionNotification(this.userData.token);
-      await this.http.addConnectionRequest(this.uid, this.userData.user);
+      await this.http.addConnectionRequest(this.uid, this.userData);
       this.connected = true;
     } else {
       await this.http.removeConnectionRequest(this.uid, this.connectionKey);

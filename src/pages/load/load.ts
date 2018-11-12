@@ -22,43 +22,61 @@ import { ChatProvider } from '../../providers/chat/chat';
 export class LoadPage {
 
   purchases = null;
+  loadProgress = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public loader: LoadProvider, private iap: InAppPurchase, private events: Events, public viewCtrl: ViewController, private http: HttpProvider, public user: UserProvider, public forum: ForumProvider, public modalCtrl: ModalController, public chatService: ChatProvider) {
   }
 
   async ionViewWillLoad() {
-    this.loader.createLoader();
-    this.loader.presentLoader();
   }
 
   ionViewDidLoad() {
     this.doInitialSetup();
   }
 
+  async loadForum() {
+    this.events.subscribe('forum:load', async (forum) => {
+      let dataArray = await this.forum.convertDataToArray(forum);
+      this.loadProgress += 5;
+      this.forum.setPosts(dataArray);
+    });
+  }
+
+  async getUserConnections() {
+    this.events.subscribe('connections:load', async (connections) => {
+      let keys = [];
+
+      connections.forEach(function(item) {
+        let itemVal = item.val();
+        itemVal.key = item.key;
+        keys.push(itemVal);
+      });
+      
+      this.user.connections = (keys.length === 0 ? [] : keys);
+    });
+  }
+
   async loadUserData(user) {
     this.user.user = user;
-    let data = await this.http.getForumData();
-    let dataArray = await this.forum.convertDataToArray(data);
-    this.forum.setPosts(dataArray);
+    await this.http.getForumData();
+    this.loadForum();
+    this.loadProgress += 5;
     
-    let connections = await this.http.getUserConnections();
+    
+    await this.http.getUserConnections();
+    this.getUserConnections();
+    this.loadProgress += 5;
+    
     let avatar = await this.http.getUserAvatar(this.user.user.uid);
-    let keys = [];
-
-    connections.forEach(async function(item) {
-      let itemVal = item.val();
-      itemVal.key = item.key;
-      keys.push(itemVal);
-    });
-
-    this.user.avatar_image = avatar.val().avatar_image;
-    this.events.publish('user:avatar', this.user.avatar_image);
+    this.loadProgress += 5;
     
-    this.user.connections = (keys.length === 0 ? [] : keys);
+    this.user.avatar_image = (avatar.val() !== null ? avatar.val().avatar_image : "https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b");
+    this.events.publish('user:avatar', this.user.avatar_image);
 
     this.events.publish('user:created', this.user.user.email);
 
     let temp = await this.http.getUserData();
+    this.loadProgress += 5;
 
     this.user.items = (temp.val().items === undefined ? [] : temp.val().items);
     this.user.entries = (temp.val().entries === undefined ? [] : temp.val().entries);
@@ -68,9 +86,12 @@ export class LoadPage {
     this.user.email = this.user.user.email;
 
     let chatsID = await this.http.getUserChats();
+    this.loadProgress += 5;
     for (let i = 0; i < chatsID.length; i++) {
       let userInfo = await this.http.getOtherUserData((chatsID[i].receiver.uid !== this.user.user.uid ? chatsID[i].receiver.uid : chatsID[i].sender.uid));
+      this.loadProgress += 1;
       let userAvatar = await this.http.getUserAvatar((chatsID[i].receiver.uid !== this.user.user.uid ? chatsID[i].receiver.uid : chatsID[i].sender.uid));
+      this.loadProgress += 1;
       let chat = {
         fullName: userInfo.val().fullName,
         avatar_image: userAvatar.val().avatar_image,
@@ -83,31 +104,37 @@ export class LoadPage {
       };
       this.user.chats.push(chat);
       if (this.user.chatUsers.indexOf(chat.uid) === -1) this.user.chatUsers.push(chat.uid);
+      this.loadProgress += 1;
     }
 
     return;
   }
 
+
   async doInitialSetup() {
     this.events.subscribe('user:set', async (user) => {
       await this.loadUserData(user);
       console.log("User Found");
+      console.log(user);
       if (user.emailVerified) {
         if (this.user.notifications.clicked && this.user.notifications.content.uid) {
           this.chatService.currentChatPairId = this.chatService.createPairId(this.user, this.user.notifications.content);
+          console.log(this.chatService.currentChatPairId);
           this.chatService.currentChatPartner = this.user.notifications.content;
           const chatModal = this.modalCtrl.create(ChatPage);
           chatModal.present();
           chatModal.onDidDismiss(data => {
             
           });
+        } else {
+          this.navCtrl.setRoot(HomePage);
         }
-        this.navCtrl.setRoot(HomePage);
       }
       else this.navCtrl.setRoot(LoginPage);
     });
     this.events.subscribe('user:not-set', (user) => {
       console.log("User NOT Found");
+      this.loadProgress = 100;
       this.user.user = user;
       this.navCtrl.setRoot(LoginPage);
     });

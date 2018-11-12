@@ -36,6 +36,7 @@ export class ChatlistPage {
   }
 
   sendMessage(chat) {
+    console.log(chat);
     this.chatService.currentChatPairId = this.chatService.createPairId(this.user, chat);
     this.chatService.currentChatPartner = chat;
     const chatModal = this.modalCtrl.create(ChatPage);

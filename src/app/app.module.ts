@@ -43,6 +43,7 @@ import { SearchPage } from '../pages/search/search';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { FirebaseConfig } from '@ionic-native/firebase-config';
 import { ChatlistPage } from '../pages/chatlist/chatlist';
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { ChatlistPage } from '../pages/chatlist/chatlist';
     ProfilePage,
     ChatPage,
     SearchPage,
-    ChatlistPage
+    ChatlistPage,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,

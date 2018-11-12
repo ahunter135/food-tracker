@@ -54,7 +54,9 @@ export class ChatPage {
     let receiver = this.chatpartner;
     let sender = {
       fullName: this.chatuser.fullName,
+      avatar_image: this.chatuser.avatar_image,
       email: this.chatuser.email,
+      token: this.chatuser.token,
       uid: this.chatuser.user.uid
     }
 
