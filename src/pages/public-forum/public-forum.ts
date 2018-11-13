@@ -46,6 +46,7 @@ export class PublicForumPage {
     this.loader.createLoader();
     this.loader.presentLoader();
     let likes = await this.forum.getPostLikes();
+
     if (likes === null) {
       post.likes++;
       await this.http.updatePostLikes(post, this.user.user.uid, false);
@@ -53,8 +54,10 @@ export class PublicForumPage {
       let liked = false;
       for (let i = 0; i < likes.length; i++) {
         for (let postKey in likes[i]) {
-          if (postKey === post.key) {
+
+          if (postKey === post.key && likes[i].key === this.user.user.uid) {
             liked = likes[i][postKey].liked;
+
             if (liked) {
               post.likes--;
             } else {

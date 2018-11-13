@@ -48,9 +48,8 @@ export class ProfilePage {
     this.connections = 0;
     this.posts = [];
     this.user = this.userData;
-
     for (let i = 0; i < this.forum.posts.length; i++) {
-      if (this.forum.posts[i].uid === this.user.uid) {
+      if (this.forum.posts[i].uid === this.user.user.uid) {
         this.posts.push(this.forum.posts[i]);
       }
     }

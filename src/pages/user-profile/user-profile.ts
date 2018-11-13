@@ -84,7 +84,7 @@ export class UserProfilePage {
 
   sendMessage() {
     this.chatService.currentChatPairId = this.chatService.createPairId(this.user, this.userData);
-    this.chatService.currentChatPartner = this.userData;
+    this.chatService.currentChatPartner = this.user;
     const chatModal = this.modalCtrl.create(ChatPage);
     chatModal.present();
     chatModal.onDidDismiss(data => {
