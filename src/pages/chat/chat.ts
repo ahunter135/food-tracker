@@ -41,7 +41,8 @@ export class ChatPage {
       self.chats = [];
       querySnapshot.forEach(function(doc) {
         self.chats.push(doc.data());
-      })
+      });
+      console.log(self.chats);
       self.content.scrollToBottom(300);
     });
   }

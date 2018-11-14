@@ -44,6 +44,9 @@ import { NativeAudio } from '@ionic-native/native-audio';
 import { FirebaseConfig } from '@ionic-native/firebase-config';
 import { ChatlistPage } from '../pages/chatlist/chatlist';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+import { Crop } from '@ionic-native/crop';
+import { File } from '@ionic-native/file';
+import { EditProfile } from '../pages/edit-profile/edit-profile';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,8 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     ChatPage,
     SearchPage,
     ChatlistPage,
-    ProgressBarComponent
+    ProgressBarComponent,
+    EditProfile
   ],
   imports: [
     BrowserModule,
@@ -99,7 +103,8 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     ProfilePage,
     ChatPage,
     SearchPage,
-    ChatlistPage
+    ChatlistPage,
+    EditProfile
   ],
   providers: [
     StatusBar,
@@ -119,7 +124,9 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     Answers,
     ChatProvider,
     NativeAudio,
-    FirebaseConfig
+    FirebaseConfig,
+    Crop,
+    File
   ]
 })
 export class AppModule {}

@@ -10,11 +10,18 @@
   </ion-header>
   
   <ion-content #content padding id="chatPage">
-      <ion-list>
-          <ion-item *ngFor="let chat of chats | sort:'time'" class="chat" text-wrap [ngClass]="{'chat-partner' : !isChatPartner(chat.sender.email)}">
-            {{chat.message}}
-          </ion-item>
-        </ion-list>
+        <ion-list>
+            <ion-item no-lines text-wrap *ngFor="let chat of chats | sort:'time'">
+              <ion-avatar item-end *ngIf="!isChatPartner(chat.sender.email)">
+                  <img src="{{chatuser.avatar_image}}">
+              </ion-avatar>
+              <p class="chatbox" *ngIf="!isChatPartner(chat.sender.email)">{{chat.message}}</p>
+              <ion-avatar item-start *ngIf="isChatPartner(chat.sender.email)">
+                  <img src="{{chatpartner.avatar_image}}">
+              </ion-avatar>
+              <p class="chatbox chatbox-right" *ngIf="isChatPartner(chat.sender.email)">{{chat.message}}</p> 
+            </ion-item>
+          </ion-list>
   </ion-content>
   
   <ion-footer class="message-footer">

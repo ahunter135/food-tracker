@@ -59,6 +59,9 @@
     },
     "cordova-plugin-firebase-config": {
       "PACKAGE_NAME": "com.ionicframework.tracker210235"
+    },
+    "cordova-plugin-crop": {
+      "PACKAGE_NAME": "com.ionicframework.tracker210235"
     }
   },
   "dependent_plugins": {

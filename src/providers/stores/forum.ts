@@ -1,24 +1,37 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
 import { HttpProvider } from '../http/http';
+import { UserProvider } from './user';
 
 @Injectable()
 export class ForumProvider {
 
   posts = [];
   postLikes = null;
+  usersPostCount = 0;
 
-  constructor(private http: HttpProvider) {}
+  constructor(private http: HttpProvider, private user: UserProvider) {}
 
-  setPosts(data) {
+  async setPosts(data) {
       if (data !== null) this.posts = data;
       this.posts.reverse();
+      await this.getUserPostsCount();
   }
 
   async getPostLikes() {
     let data = await this.http.getPostLikes();
     this.postLikes = this.convertDataToArray(data);
     return this.postLikes;
+  }
+
+  async getUserPostsCount() {
+    this.usersPostCount = 0;
+    for (let i = 0; i < this.posts.length; i++) {
+      if (this.posts[i].uid === this.user.user.uid) {
+        this.usersPostCount++;
+      }
+    }
+    return this.usersPostCount;
   }
 
   async convertDataToArray(data) {

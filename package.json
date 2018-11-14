@@ -23,9 +23,10 @@
     "@ionic-native/app-rate": "^4.16.0",
     "@ionic-native/camera": "^4.16.0",
     "@ionic-native/core": "~4.15.0",
+    "@ionic-native/crop": "^4.17.0",
     "@ionic-native/fabric": "^4.17.0",
     "@ionic-native/fcm": "~4.15.0",
-    "@ionic-native/file": "^4.16.0",
+    "@ionic-native/file": "^4.17.0",
     "@ionic-native/firebase-config": "^4.17.0",
     "@ionic-native/http": "^4.15.0",
     "@ionic-native/image-picker": "^4.16.0",
@@ -42,6 +43,7 @@
     "cordova-plugin-advanced-http": "^2.0.1",
     "cordova-plugin-apprate": "^1.4.0",
     "cordova-plugin-camera": "^4.0.3",
+    "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-dialogs": "^2.0.1",
     "cordova-plugin-fcm-with-dependecy-updated": "^2.2.5",
@@ -99,7 +101,8 @@
         "FABRIC_API_SECRET": "69f75164a74d221816f51a2b5dfa30a008b21f74f832624452b11f981ac47e22"
       },
       "cordova-plugin-nativeaudio": {},
-      "cordova-plugin-firebase-config": {}
+      "cordova-plugin-firebase-config": {},
+      "cordova-plugin-crop": {}
     },
     "platforms": [
       "browser",

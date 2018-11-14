@@ -19,141 +19,92 @@
   </ion-navbar>
   </ion-header>
     <ion-content>
-    <div [hidden]="showEdit">
-          <ion-row padding>
-              <!-- Avatar -->
-              <ion-col col-3>
-                <img [src]="chosenPicture" class="avatar" alt="" onerror="this.src='./assets/imgs/default-avatar.jpg'">
-              </ion-col>
-              <!-- Information about user -->
-              <ion-col col-6 text-center >
-                <h6>{{posts.length}}</h6>
-                <p no-padding no-margin>Posts</p>
-              </ion-col>
-              <ion-col col-3 text-center (click)="showConnections()">
-                <h6>{{connections}}</h6>
-                <p no-paddin no-margin>Connections</p>
-              </ion-col>
-            </ion-row>
-
-            <!-- Edit/follow button -->
-            <ion-row no-padding no-margin [hidden]="showEdit">
-                <ion-col no-padding no-margin col-4></ion-col>
-                  <ion-col no-padding no-margin text-center col-8>
-                  <button (click)="showEdit = !showEdit" ion-button outline small>Edit your profile</button>
-                </ion-col>
-                <ion-col col-3></ion-col>
-              </ion-row>
-              <ion-row no-padding no-margin [hidden]="!showEdit">
-                  <ion-col no-padding no-margin col-4></ion-col>
-                    <ion-col no-padding no-margin text-center col-8>
-                    <button (click)="submitEdit()" ion-button outline small>Save Edit</button>
-                  </ion-col>
-                  <ion-col col-3></ion-col>
-                </ion-row>
-          <ion-card>
-            <ion-card-header style="align-items: center; text-align: center">
-                {{user.fullName}}
-            </ion-card-header>
-            <ion-card-content>
-              <div class="card-body">
-                  {{user.myStory}}
-              </div>
-              <div class="break"></div>
-              <div class="post-header">
-                Posts
-              </div>
-              <div class="post-body">
-                <div *ngIf="posts.length === 0; else showNotEmpty">
-                  <p style="opacity: 0.5; text-align: center; padding-top: 15px; padding-bottom: 5px;">You have not posted anything yet</p>
-                </div>
-                <ng-template #showNotEmpty>
-                  <div>
-                      <ion-item *ngFor="let post of posts">
-                          <ion-card>
-                            <ion-item>
-                              <ion-avatar item-start>
-                                <img src="{{post.avatar_image}}" onerror="this.src='./assets/imgs/default-avatar.jpg'"/>
-                              </ion-avatar>
-                              <h2>{{post.user_name}}</h2>
-                              <p>{{post.posted}}</p>
-                            </ion-item>
-                            <ion-card-content text-wrap>
-                              {{post.text}}
-                            </ion-card-content>
-                            <ion-row>
-                                <ion-col>
-                                  <button ion-button icon-start clear small disabled>
-                                    <ion-icon name="ios-thumbs-up"></ion-icon>
-                                    <div>{{post.likes}} Likes</div>
-                                  </button>
-                                </ion-col>
-                                <ion-col>
-                                  <button ion-button icon-start clear small (click)="seeComments(post)">
-                                    <ion-icon name="ios-text"></ion-icon>
-                                    <div >{{post.comment_amount}} Comments</div>
-                                  </button>
-                                </ion-col>
-                                <ion-col center text-center>
-                                  <button ion-button icon-start clear small color="danger" (click)="deletePost(post)">
-                                    <ion-icon name="ios-trash"></ion-icon>
-                                  </button>
-                                </ion-col>
-                              </ion-row>
-                          </ion-card>
-                        </ion-item>
-                  </div>
-                </ng-template>
-              </div>
-            </ion-card-content>
-          </ion-card>
-    </div>
-    <div [hidden]="!showEdit">
         <ion-row padding>
-            <!-- Avatar -->
-            <ion-col col-3>
-              <img [src]="chosenPicture" class="avatar" alt="" onerror="this.src='./assets/imgs/default-avatar.jpg'" (click)="selectAvatar()">
-            </ion-col>
-            <!-- Information about user -->
-            <ion-col col-6 text-center >
-              <h6>{{posts.length}}</h6>
-              <p no-padding no-margin>Posts</p>
-            </ion-col>
-            <ion-col col-3 text-center>
-              <h6>{{userData.connections.length}}</h6>
-              <p no-paddin no-margin>Connections</p>
-            </ion-col>
-          </ion-row>
+          <!-- Avatar -->
+          <ion-col col-3>
+            <img [src]="chosenPicture" class="avatar" alt="" onerror="this.src='./assets/imgs/default-avatar.jpg'">
+          </ion-col>
+          <!-- Information about user -->
+          <ion-col col-6 text-center >
+            <h6>{{postsCount}}</h6>
+            <p no-padding no-margin>Posts</p>
+          </ion-col>
+          <ion-col col-3 text-center (click)="showConnections()">
+            <h6>{{connections}}</h6>
+            <p no-paddin no-margin>Connections</p>
+          </ion-col>
+        </ion-row>
 
-          <!-- Edit/follow button -->
-          <ion-row no-padding no-margin [hidden]="showEdit">
+        <!-- Edit/follow button -->
+        <ion-row no-padding no-margin>
+            <ion-col no-padding no-margin col-4></ion-col>
+              <ion-col no-padding no-margin text-center col-8>
+              <button (click)="showEditModal()" ion-button outline small>Edit your profile</button><!--(click)="showEdit = !showEdit"-->
+            </ion-col>
+            <ion-col col-3></ion-col>
+          </ion-row>
+          <ion-row no-padding no-margin [hidden]="!showEdit">
               <ion-col no-padding no-margin col-4></ion-col>
                 <ion-col no-padding no-margin text-center col-8>
-                <button (click)="showEdit = !showEdit" ion-button outline small>Edit your profile</button>
+                <button (click)="submitEdit()" ion-button outline small>Save Edit</button>
               </ion-col>
               <ion-col col-3></ion-col>
             </ion-row>
-            <ion-row no-padding no-margin [hidden]="!showEdit">
-                <ion-col no-padding no-margin col-4></ion-col>
-                  <ion-col no-padding no-margin text-center col-8>
-                  <button (click)="submitEdit()" ion-button outline small>Save Edit</button>
-                </ion-col>
-                <ion-col col-3></ion-col>
-              </ion-row>
-
-          <!-- Profile info -->
-          <div padding>
-              <ion-col col-6>
-                <ion-item>
-                    <ion-label style="color: black" stacked>Full Name</ion-label>
-                    <ion-input type="text" [(ngModel)]="profile.fullName" style="height: 50px;" placeholder="{{user.fullName}}" autocorrect="on" autocomplete="on"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label style="color: black" stacked>My Story</ion-label>
-                    <ion-textarea type="text" rows="10" [(ngModel)]="profile.myStory" placeholder="{{user.myStory}}" autocorrect="on" autocomplete="on"></ion-textarea>
-                </ion-item>                  
-              </ion-col>
+      <ion-card>
+        <ion-card-header style="align-items: center; text-align: center">
+            {{user.fullName}}
+        </ion-card-header>
+        <ion-card-content>
+          <div class="card-body">
+              {{user.myStory}}
+          </div>
+          <div class="break"></div>
+          <div class="post-header">
+            Posts
+          </div>
+          <div class="post-body">
+            <div *ngIf="postsCount === 0; else showNotEmpty">
+              <p style="opacity: 0.5; text-align: center; padding-top: 15px; padding-bottom: 5px;">You have not posted anything yet</p>
             </div>
-    </div>
+            <ng-template #showNotEmpty>
+              <div>
+                  <ion-item *ngFor="let post of forum.posts">
+                      <ion-card *ngIf="post.uid === userData.user.uid">
+                        <ion-item>
+                          <ion-avatar item-start>
+                            <img src="{{chosenPicture}}" onerror="this.src='./assets/imgs/default-avatar.jpg'"/>
+                          </ion-avatar>
+                          <h2>{{post.user_name}}</h2>
+                          <p>{{post.posted}}</p>
+                        </ion-item>
+                        <ion-card-content text-wrap>
+                          {{post.text}}
+                        </ion-card-content>
+                        <ion-row>
+                            <ion-col>
+                              <button ion-button icon-start clear small disabled>
+                                <ion-icon name="ios-thumbs-up"></ion-icon>
+                                <div>{{post.likes}} Likes</div>
+                              </button>
+                            </ion-col>
+                            <ion-col>
+                              <button ion-button icon-start clear small (click)="seeComments(post)">
+                                <ion-icon name="ios-text"></ion-icon>
+                                <div >{{post.comment_amount}} Comments</div>
+                              </button>
+                            </ion-col>
+                            <ion-col center text-center>
+                              <button ion-button icon-start clear small color="danger" (click)="deletePost(post)">
+                                <ion-icon name="ios-trash"></ion-icon>
+                              </button>
+                            </ion-col>
+                          </ion-row>
+                      </ion-card>
+                    </ion-item>
+              </div>
+            </ng-template>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </ion-content>
     

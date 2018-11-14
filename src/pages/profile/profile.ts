@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ActionSheetController, AlertController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ActionSheetController, AlertController, ModalController, Events } from 'ionic-angular';
 import { UserProvider } from '../../providers/stores/user';
 import { HttpProvider } from '../../providers/http/http';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -8,6 +8,9 @@ import { ForumProvider } from '../../providers/stores/forum';
 import { CommentsPage } from '../comments/comments';
 import { SearchPage } from '../search/search';
 import { ConnectionsPage } from '../connections/connections';
+import { Crop } from '@ionic-native/crop';
+import { File } from '@ionic-native/file';
+import { EditProfile } from '../edit-profile/edit-profile';
 
 /**
  * Generated class for the ProfilePage page.
@@ -22,7 +25,7 @@ import { ConnectionsPage } from '../connections/connections';
 })
 export class ProfilePage {
   user = null;
-  posts = [];
+  postsCount = 0;
   showEdit = false;
   profile = {
     fullName: '',
@@ -32,8 +35,22 @@ export class ProfilePage {
   placeholder = './assets/imgs/default-avatar.jpg';
   chosenPicture = null;
   toggled = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl: MenuController, public userData: UserProvider, private http: HttpProvider, public actionSheetCtrl: ActionSheetController, private camera: Camera, public loader: LoadProvider, public forum: ForumProvider, public alertCtrl: AlertController, public modalCtrl: ModalController) {
-  }
+  uploadedPhoto;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public menuCtrl: MenuController, 
+    public userData: UserProvider, 
+    private http: HttpProvider, 
+    public actionSheetCtrl: ActionSheetController, 
+    
+    public loader: LoadProvider, 
+    public forum: ForumProvider, 
+    public alertCtrl: AlertController, 
+    public modalCtrl: ModalController, 
+    public events: Events
+    ) {}
 
   ionViewWillLoad() {
     this.updateUser();
@@ -46,58 +63,14 @@ export class ProfilePage {
 
   updateUser() {
     this.connections = 0;
-    this.posts = [];
     this.user = this.userData;
-    for (let i = 0; i < this.forum.posts.length; i++) {
-      if (this.forum.posts[i].uid === this.user.user.uid) {
-        this.posts.push(this.forum.posts[i]);
-      }
-    }
+    this.postsCount = this.forum.usersPostCount;
+
     for (let i = 0; i < this.user.connections.length; i++) {
       if (this.user.connections[i].accepted) {
         this.connections++;
       }
     }
-  }
-
-  async submitEdit() {
-    this.loader.createLoader();
-    this.loader.presentLoader();
-    this.userData.fullName = (this.profile.fullName === '' ? this.userData.fullName : this.profile.fullName);
-    this.userData.myStory = (this.profile.myStory === '' ? this.userData.myStory : this.profile.myStory);
-
-    await this.http.updateUser();
-    await this.http.setUserAvatar(this.userData.user.uid, this.userData.avatar_image);
-    this.showEdit = false;
-    this.loader.dismissLoader();
-  }
-
-  selectAvatar() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      sourceType: 1,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      cameraDirection: 0,
-      correctOrientation: true,
-      targetHeight: 500,
-      targetWidth: 500
-    }
-    this.showCamera(options);
-  }
-
-  showCamera(options) {
-    this.camera.getPicture(options).then(async (imageData) => {
-      this.loader.createLoader();
-      this.loader.presentLoader();
-      let data = await this.http.uploadImage(imageData);
-      this.userData.user.avatar_image = data.downloadURL;
-      this.chosenPicture = data.downloadURL;
-      this.loader.dismissLoader();
-    }).catch((err) => {
-      console.log(err);
-    })
   }
 
   seeComments(post) {
@@ -115,9 +88,7 @@ export class ProfilePage {
       buttons: [
         {
           text: 'No',
-          handler: () => {
-
-          }
+          handler: () => {}
         },
         {
           text: 'Yes',
@@ -125,11 +96,7 @@ export class ProfilePage {
             this.loader.createLoader();
             this.loader.presentLoader();
             await this.http.deletePost(post);
-            await this.http.getForumData().then(async (data) => {
-              let dataArray = await this.forum.convertDataToArray(data);
-              this.forum.setPosts(dataArray);
-            });
-            this.updateUser();
+            this.postsCount--;
             this.loader.dismissLoader();
           }
         }
@@ -151,6 +118,15 @@ export class ProfilePage {
     connectionModal.present();
     connectionModal.onDidDismiss(data => {
       
+    });
+  }
+
+  showEditModal() {
+    const editModal = this.modalCtrl.create(EditProfile, {user: this.user});
+    editModal.present();
+    editModal.onDidDismiss(data => {
+      this.chosenPicture = this.userData.avatar_image;
+      this.events.publish('user:avatar', this.chosenPicture);
     });
   }
 

@@ -2,19 +2,7 @@ page-chat {
     #chatPage {
         display: flex;
         flex-direction: row;
-        .chat {
-          background-color: pink;
-          border: none;
-          width: 90%;
-          margin-bottom: 20px;
-          border-radius: 5px;
-          align-self: flex-end;
-        }
-      
-        .chat-partner {
-          margin-left: 10%;
-          background-color: skyblue;
-        }
+        
       }
       ion-title {
         position: absolute;
@@ -28,5 +16,27 @@ page-chat {
 
       ion-textarea {
         white-space: pre-wrap;
+      }
+      img {
+        transform: rotate(270deg);
+      }
+
+      .chatbox {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 9px;
+      }
+    
+      .chatbox-right {
+        background-color: #EEEEEE;
+      }
+    
+      .heart-size {
+        font-size: 34px;
+      }
+    
+      .like-msg-btn {
+        float: right;
+        animation: heartbeat 1s linear;
       }
 }

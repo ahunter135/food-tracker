@@ -38,7 +38,7 @@ export class LoadPage {
     this.events.subscribe('forum:load', async (forum) => {
       let dataArray = await this.forum.convertDataToArray(forum);
       this.loadProgress += 5;
-      this.forum.setPosts(dataArray);
+      await this.forum.setPosts(dataArray);
     });
   }
 
@@ -97,9 +97,9 @@ export class LoadPage {
     this.loadProgress += 5;
     for (let i = 0; i < chatsID.length; i++) {
       let userInfo = await this.http.getOtherUserData((chatsID[i].receiver.uid !== this.user.user.uid ? chatsID[i].receiver.uid : chatsID[i].sender.uid));
-      this.loadProgress += 1;
+      if (this.loadProgress < 100) this.loadProgress += 1;
       let userAvatar = await this.http.getUserAvatar((chatsID[i].receiver.uid !== this.user.user.uid ? chatsID[i].receiver.uid : chatsID[i].sender.uid));
-      this.loadProgress += 1;
+      if (this.loadProgress < 100) this.loadProgress += 1;
       let chat = {
         fullName: userInfo.val().fullName,
         avatar_image: userAvatar.val().avatar_image,
@@ -112,18 +112,19 @@ export class LoadPage {
       };
       this.user.chats.push(chat);
       if (this.user.chatUsers.indexOf(chat.uid) === -1) this.user.chatUsers.push(chat.uid);
-      this.loadProgress += 1;
+      if (this.loadProgress < 100) this.loadProgress += 1;
     }
-
+    
     return;
   }
-
 
   async doInitialSetup() {
     this.events.subscribe('user:set', async (user) => {
       await this.loadUserData(user);
       console.log("User Found");
       console.log(user);
+      let percentLeft = 100 - this.loadProgress;
+      if (this.loadProgress < 100) this.loadProgress += percentLeft;
       if (user.emailVerified) {
         if (this.user.notifications.clicked && this.user.notifications.content.uid) {
           this.chatService.currentChatPairId = this.chatService.createPairId(this.user, this.user.notifications.content);
