@@ -5,6 +5,7 @@ import moment from 'moment';
 import firebase from 'firebase';
 import { HTTP } from '@ionic-native/http';
 import { Events } from 'ionic-angular';
+import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class HttpProvider {
@@ -103,6 +104,19 @@ export class HttpProvider {
     let avatarImageRef = storageRef.child('avatar-images/'+this.user.user.uid + '/' + this.user.user.uid + '_' + today + '_avatar.jpg');
     let uploadTask = await avatarImageRef.putString(file, 'base64');
     return uploadTask;
+  }
+
+  async uploadPostImage(file) {
+    let uuid = UUID.UUID();
+    let storageRef = firebase.storage().ref();
+    let avatarImageRef = storageRef.child('post-images/'+this.user.user.uid + '/' + this.user.user.uid + '_' + uuid + '_post.jpg');
+    let uploadTask = await avatarImageRef.putString(file, 'base64');
+    return uploadTask;
+  }
+
+  async removeImage(file) {
+    let storageRef = firebase.storage().refFromURL(file);
+    await storageRef.delete();
   }
 
   async getUserConnections() {

@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { SortPipe } from './sort/sort';
+import { MypostsPipe } from './myposts/myposts';
 @NgModule({
-	declarations: [SortPipe],
+	declarations: [SortPipe,
+    MypostsPipe],
 	imports: [],
-	exports: [SortPipe]
+	exports: [SortPipe,
+    MypostsPipe]
 })
 export class PipesModule {}

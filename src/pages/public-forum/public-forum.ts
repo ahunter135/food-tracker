@@ -9,44 +9,33 @@ import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
 import { UserProfilePage } from '../user-profile/user-profile';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { File } from '@ionic-native/file';
 
 @Component({
   selector: 'page-public-forum',
   templateUrl: 'public-forum.html',
 })
 export class PublicForumPage {
-  posts = null;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public forum: ForumProvider, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, public user: UserProvider) {
+  entry = {
+    id: '',
+    avatar_image: (this.user.avatar_image ? this.user.avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b'),
+    user_name: this.user.fullName,
+    uid: '',
+    text: '',
+    comments: [],
+    likes: 0,
+    image: null,
+    posted: moment().format('MMMM Do YYYY, h:mm:ss a')
   }
-  
-  async ionViewDidEnter() {
-    this.posts = this.forum.posts;
-    
-    this.configurePosts();
-  }
-
-  async addPost() {
-    let addPostModal = this.modalCtrl.create(AddPost);
-    addPostModal.present();
-    addPostModal.onDidDismiss(async data => {
-      this.posts = this.forum.posts;
-      this.configurePosts();
-    });
-  }
-
-  configurePosts() {
-    for (let i = 0; i < this.posts.length; i++) {
-      if (this.posts[i].comments === undefined) this.posts[i].comment_amount = 0;
-      else this.posts[i].comment_amount = this.posts[i].comments.length;
-    }
-    this.loader.dismissLoader();
+  uploadedImage = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public forum: ForumProvider, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, public user: UserProvider, public nativeAudio: NativeAudio) {
   }
 
   async likePost(post) {
     this.loader.createLoader();
     this.loader.presentLoader();
     let likes = await this.forum.getPostLikes();
-
     if (likes === null) {
       post.likes++;
       await this.http.updatePostLikes(post, this.user.user.uid, false);
@@ -54,22 +43,21 @@ export class PublicForumPage {
       let liked = false;
       for (let i = 0; i < likes.length; i++) {
         for (let postKey in likes[i]) {
-
           if (postKey === post.key && likes[i].key === this.user.user.uid) {
             liked = likes[i][postKey].liked;
-
-            if (liked) {
-              post.likes--;
-            } else {
-              post.likes++;
-            }
             break;
           }
         }
       }
+      console.log(liked);
+      if (liked) {
+        post.likes--;
+      } else {
+        post.likes++;
+      }
       await this.http.updatePostLikes(post, this.user.user.uid, liked);
     }
-    await this.configurePosts(); 
+    this.loader.dismissLoader();
   }
 
   async addComment(post) {
@@ -81,8 +69,6 @@ export class PublicForumPage {
   }
 
   async doRefresh(refresher) {
-    this.posts = this.forum.posts;
-    this.configurePosts();
     refresher.complete();
   }
 
@@ -95,6 +81,39 @@ export class PublicForumPage {
     this.navCtrl.parent.select(1);
    }
   }
+  async submit() {
+    this.nativeAudio.play('post', () => console.log('uniqueId1 is done playing'));
+     this.entry.id = UUID.UUID();
+     this.entry.uid = this.user.user.uid;
+     this.loader.createLoader();
+     this.loader.presentLoader();
+     await this.http.postForumPost(this.entry);
+     this.entry = {
+      id: '',
+      avatar_image: (this.user.avatar_image ? this.user.avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b'),
+      user_name: this.user.fullName,
+      uid: '',
+      text: '',
+      comments: [],
+      likes: 0,
+      image: null,
+      posted: moment().format('MMMM Do YYYY, h:mm:ss a')
+    }
+    this.loader.dismissLoader();
+   }
+
+   addImage() {
+    let addPostModal = this.modalCtrl.create(AddPost);
+    addPostModal.present();
+    addPostModal.onDidDismiss(async data => {
+      if (data) this.entry.image = data;
+    });
+   }
+
+   removePhoto() {
+    this.http.removeImage(this.entry.image);
+    this.entry.image = null;
+   }
 }
 
 
@@ -104,31 +123,54 @@ export class PublicForumPage {
   templateUrl: 'addPost.html'
 })
 export class AddPost {
-
-  entry = {
-    id: '',
-    avatar_image: (this.user.avatar_image ? this.user.avatar_image : 'https://firebasestorage.googleapis.com/v0/b/foodtracker-8cd65.appspot.com/o/default-avatar.jpg?alt=media&token=e0eb897f-23d7-496d-8a8f-9b158f92655b'),
-    user_name: this.user.fullName,
-    uid: '',
-    text: '',
-    comments: [],
-    likes: 0,
-    posted: moment().format('MMMM Do YYYY, h:mm:ss a')
-  }
- constructor(public viewCtrl: ViewController, private http: HttpProvider, public loader: LoadProvider, public user: UserProvider,public nativeAudio: NativeAudio) {
+  image;
+  loadProgress = 0;
+ constructor(
+   public viewCtrl: ViewController, 
+  private imagePicker: ImagePicker, 
+  private file: File,
+  private http: HttpProvider,
+  private loader: LoadProvider
+  ) {
  }
 
- async submit() {
-  this.nativeAudio.play('post', () => console.log('uniqueId1 is done playing'));
-   this.entry.id = UUID.UUID();
-   this.entry.uid = this.user.user.uid;
+ async ionViewDidLoad() {
    this.loader.createLoader();
    this.loader.presentLoader();
-   await this.http.postForumPost(this.entry);
-   this.viewCtrl.dismiss();
+  let permission = await this.imagePicker.hasReadPermission();
+  console.log(permission);
+  if (permission) {
+    let options = {
+      maximumImagesCount: 1,
+      width: 1080,
+      height: 1080,
+      quality: 100
+    };
+    this.imagePicker.getPictures(options).then(async (results) => {
+      this.loadProgress += 33;
+      let base64string = await this.encodeImageUri(results[0]);
+      this.loadProgress += 33;
+      let data = await this.http.uploadPostImage(base64string);
+      this.loadProgress = 100;
+      this.loader.dismissLoader();
+      this.viewCtrl.dismiss(data.downloadURL);
+    }, (err) => { });
+  } else {
+    let permission = this.imagePicker.requestReadPermission();
+    this.loader.dismissLoader();
+    this.viewCtrl.dismiss();
+  }
  }
 
- dismiss() {
-   this.viewCtrl.dismiss();
- }
+  async encodeImageUri(filePath) {
+    let fileName = filePath.split('/').pop();
+    let path = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+    fileName = fileName.split('?');
+
+    let base64string = await this.file.readAsDataURL(path, fileName[0]);
+    base64string = base64string.split(',').pop();
+
+    return base64string;
+  };
+
 }

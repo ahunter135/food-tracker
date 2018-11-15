@@ -138,11 +138,11 @@
   "cordova-plugin-telerik-imagepicker": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-telerik-imagepicker"
+      "id": "cordova-plugin-telerik-imagepicker@^2.2.2"
     },
     "is_top_level": true,
     "variables": {
-      "PHOTO_LIBRARY_USAGE_DESCRIPTION": "Needs access to photo library to import photos from library"
+      "PHOTO_LIBRARY_USAGE_DESCRIPTION": "Needs access to photo library to import photos"
     }
   },
   "cordova-support-android-plugin": {

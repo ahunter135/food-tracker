@@ -39,18 +39,74 @@
         <ion-row no-padding no-margin>
             <ion-col no-padding no-margin col-4></ion-col>
               <ion-col no-padding no-margin text-center col-8>
-              <button (click)="showEditModal()" ion-button outline small>Edit your profile</button><!--(click)="showEdit = !showEdit"-->
+              <button (click)="showEditModal()" ion-button outline small>Edit your profile</button>
             </ion-col>
             <ion-col col-3></ion-col>
           </ion-row>
-          <ion-row no-padding no-margin [hidden]="!showEdit">
-              <ion-col no-padding no-margin col-4></ion-col>
-                <ion-col no-padding no-margin text-center col-8>
-                <button (click)="submitEdit()" ion-button outline small>Save Edit</button>
-              </ion-col>
-              <ion-col col-3></ion-col>
-            </ion-row>
-      <ion-card>
+
+        <div padding>
+            <p no-margin no-padding><b>{{user.fullName}}</b></p>
+            <p no-padding no-margin class="info">{{user.myStory}}</p>
+          </div>
+            
+            <ion-card no-padding padding-bottom no-margin class="card" *ngFor="let post of forum.posts | myposts">
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="{{post.avatar_image}}" onerror="this.src='./assets/imgs/default-avatar.jpg'" class="avatar-image" />
+                  </ion-avatar>
+                  <h2 style="font-weight: bold">{{post.user_name}}</h2>
+                  <p>{{post.posted}}</p>
+                </ion-item>
+        
+                <img *ngIf="post.image !== undefined" src="{{post.image}}">
+                
+                <p no-margin no-padding *ngIf="post.image !== undefined">
+                    <button clear ion-button icon-only disabled class="like-btn">
+                      <ion-icon no-padding isActive="false" name="ios-thumbs-up-outline" class="icon-space"></ion-icon>
+                    </button>
+                    <button clear ion-button icon-only (click)="addComment(post)">
+                      <ion-icon no-padding isActive="false" color="black" name="ios-text-outline" class="icon-space" style="font-weight: bold"></ion-icon>
+                    </button>
+                    <button ion-button icon-start clear small color="danger" (click)="deletePost(post)">
+                        <ion-icon name="ios-trash"></ion-icon>
+                    </button>
+                </p>
+        
+                <hr>
+        
+                <ion-card-content *ngIf="post.image !== undefined">
+                  <p class="like-content"><ion-icon name="heart"></ion-icon> {{post.likes}} likes</p>
+                  <p>{{post.text}}</p>
+                  <ion-note style="font-size: 12px">
+                      {{post.time_since}}
+                  </ion-note>
+                </ion-card-content>
+                <ion-card-content text-wrap *ngIf="post.image === undefined"> 
+                    {{post.text}}
+                  </ion-card-content>
+                  <ion-row *ngIf="post.image === undefined">
+                      <ion-col>
+                        <button ion-button icon-start clear small disabled>
+                          <ion-icon name="ios-thumbs-up-outline"></ion-icon>
+                          <div>{{post.likes}} Likes</div>
+                        </button>
+                      </ion-col>
+                      <ion-col>
+                        <button ion-button icon-start clear small (click)="seeComments(post)">
+                          <ion-icon name="ios-text-outline"></ion-icon>
+                          <div *ngIf="post.comments !== undefined; else showNone">{{post.comments.length}} Comments</div>
+                          <ng-template #showNone>0 Comments</ng-template>
+                        </button>
+                      </ion-col>
+                      <ion-col center text-center>
+                          <button ion-button icon-start clear small color="danger" (click)="deletePost(post)">
+                            <ion-icon name="ios-trash"></ion-icon>
+                          </button>
+                        </ion-col>
+                    </ion-row>
+              </ion-card>
+            <!--
+<ion-card>
         <ion-card-header style="align-items: center; text-align: center">
             {{user.fullName}}
         </ion-card-header>
@@ -106,5 +162,7 @@
           </div>
         </ion-card-content>
       </ion-card>
+            -->
+      
     </ion-content>
     

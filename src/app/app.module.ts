@@ -47,6 +47,7 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { Crop } from '@ionic-native/crop';
 import { File } from '@ionic-native/file';
 import { EditProfile } from '../pages/edit-profile/edit-profile';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { EditProfile } from '../pages/edit-profile/edit-profile';
     NativeAudio,
     FirebaseConfig,
     Crop,
-    File
+    File,
+    ImagePicker
   ]
 })
 export class AppModule {}

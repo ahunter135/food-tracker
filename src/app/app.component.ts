@@ -20,6 +20,7 @@ import { HttpProvider } from '../providers/http/http';
 import { LoadProvider } from '../providers/load/load';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { FirebaseConfig } from '@ionic-native/firebase-config';
+import { AppRate } from '@ionic-native/app-rate';
 
 @Component({
   templateUrl: 'app.html'
@@ -38,7 +39,7 @@ export class MyApp {
   freeSub = false;
   chosenPicture = null;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private fcm: FCM, public events: Events, private storage: Storage, private userData: UserProvider, public iap: InAppPurchase, private http: HttpProvider, public loader: LoadProvider, public alertCtrl: AlertController, private crashlytics: Crashlytics, private answers: Answers, private nativeAudio: NativeAudio, private firebaseConfig: FirebaseConfig) {
+  constructor(public platform: Platform, public appRate: AppRate, public statusBar: StatusBar, public splashScreen: SplashScreen, private fcm: FCM, public events: Events, private storage: Storage, private userData: UserProvider, public iap: InAppPurchase, private http: HttpProvider, public loader: LoadProvider, public alertCtrl: AlertController, private crashlytics: Crashlytics, private answers: Answers, private nativeAudio: NativeAudio, private firebaseConfig: FirebaseConfig) {
     firebase.initializeApp({
         apiKey: "AIzaSyCLOlz7uQrEC-HutG9MILNsgMtFE5CyOyU",
         authDomain: "foodtracker-8cd65.firebaseapp.com",
@@ -213,5 +214,12 @@ export class MyApp {
     firebase.auth().signOut().then(function() {
     }).catch(function(error) {
     });
+  }
+
+  leaveReview() {
+    this.appRate.preferences.storeAppURL = {
+      android: 'market://details?id=com.ionicframework.tracker210235'
+    };
+    this.appRate.navigateToAppStore();
   }
 }
