@@ -9,10 +9,17 @@ export class MypostsPipe implements PipeTransform {
 
   transform(value, ...args) {
     let postArr = [];
+    let flag = args[0];
     for (let i = 0; i < value.length; i++) {
-      if (value[i].uid === this.user.user.uid) {
-        postArr.push(value[i]);
-      }
+      if (flag) {
+        if (value[i].uid === this.user.user.uid) {
+          postArr.push(value[i]);
+        }
+      } else {
+        if (value[i].uid !== this.user.user.uid) {
+          postArr.push(value[i]);
+        }
+      }      
     }
 
     return postArr;

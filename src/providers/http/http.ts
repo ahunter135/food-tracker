@@ -147,7 +147,8 @@ export class HttpProvider {
             unique_array.push(allArray[i])
         }
     }
-    return unique_array;
+
+    this.events.publish('chats:data', unique_array);
   }
 
   async getOtherUserConnectionData(requestedUID) {

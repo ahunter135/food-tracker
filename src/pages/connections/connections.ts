@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { UserProvider } from '../../providers/stores/user';
 import { HttpProvider } from '../../providers/http/http';
 import { LoadProvider } from '../../providers/load/load';
@@ -23,6 +23,7 @@ export class ConnectionsPage {
   }
 
   async ionViewWillEnter() {
+    this.connections = [];
     for (let i = 0; i < this.user.connections.length; i++) {
       if (this.user.connections[i].accepted || this.user.connections[i].accepted === undefined) {
         let avatar = await this.http.getUserAvatar(this.user.connections[i].connectionUID);

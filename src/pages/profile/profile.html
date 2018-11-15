@@ -49,7 +49,7 @@
             <p no-padding no-margin class="info">{{user.myStory}}</p>
           </div>
             
-            <ion-card no-padding padding-bottom no-margin class="card" *ngFor="let post of forum.posts | myposts">
+            <ion-card no-padding padding-bottom no-margin class="card" *ngFor="let post of forum.posts | myposts:true">
                 <ion-item>
                   <ion-avatar item-left>
                     <img src="{{post.avatar_image}}" onerror="this.src='./assets/imgs/default-avatar.jpg'" class="avatar-image" />
@@ -64,7 +64,7 @@
                     <button clear ion-button icon-only disabled class="like-btn">
                       <ion-icon no-padding isActive="false" name="ios-thumbs-up-outline" class="icon-space"></ion-icon>
                     </button>
-                    <button clear ion-button icon-only (click)="addComment(post)">
+                    <button clear ion-button icon-only (click)="seeComments(post)">
                       <ion-icon no-padding isActive="false" color="black" name="ios-text-outline" class="icon-space" style="font-weight: bold"></ion-icon>
                     </button>
                     <button ion-button icon-start clear small color="danger" (click)="deletePost(post)">
@@ -105,64 +105,6 @@
                         </ion-col>
                     </ion-row>
               </ion-card>
-            <!--
-<ion-card>
-        <ion-card-header style="align-items: center; text-align: center">
-            {{user.fullName}}
-        </ion-card-header>
-        <ion-card-content>
-          <div class="card-body">
-              {{user.myStory}}
-          </div>
-          <div class="break"></div>
-          <div class="post-header">
-            Posts
-          </div>
-          <div class="post-body">
-            <div *ngIf="postsCount === 0; else showNotEmpty">
-              <p style="opacity: 0.5; text-align: center; padding-top: 15px; padding-bottom: 5px;">You have not posted anything yet</p>
-            </div>
-            <ng-template #showNotEmpty>
-              <div>
-                  <ion-item *ngFor="let post of forum.posts">
-                      <ion-card *ngIf="post.uid === userData.user.uid">
-                        <ion-item>
-                          <ion-avatar item-start>
-                            <img src="{{chosenPicture}}" onerror="this.src='./assets/imgs/default-avatar.jpg'"/>
-                          </ion-avatar>
-                          <h2>{{post.user_name}}</h2>
-                          <p>{{post.posted}}</p>
-                        </ion-item>
-                        <ion-card-content text-wrap>
-                          {{post.text}}
-                        </ion-card-content>
-                        <ion-row>
-                            <ion-col>
-                              <button ion-button icon-start clear small disabled>
-                                <ion-icon name="ios-thumbs-up"></ion-icon>
-                                <div>{{post.likes}} Likes</div>
-                              </button>
-                            </ion-col>
-                            <ion-col>
-                              <button ion-button icon-start clear small (click)="seeComments(post)">
-                                <ion-icon name="ios-text"></ion-icon>
-                                <div >{{post.comment_amount}} Comments</div>
-                              </button>
-                            </ion-col>
-                            <ion-col center text-center>
-                              <button ion-button icon-start clear small color="danger" (click)="deletePost(post)">
-                                <ion-icon name="ios-trash"></ion-icon>
-                              </button>
-                            </ion-col>
-                          </ion-row>
-                      </ion-card>
-                    </ion-item>
-              </div>
-            </ng-template>
-          </div>
-        </ion-card-content>
-      </ion-card>
-            -->
       
     </ion-content>
     

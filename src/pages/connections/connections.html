@@ -17,44 +17,20 @@
     <ion-list>
       <ion-list-header>Connections</ion-list-header>
         <ion-item *ngFor="let connection of connections" (click)="showUserProfile(connection)">
-          <span *ngIf="connection.accepted === undefined; else showConnections">
-            <ion-row>
-              <ion-col>
-                <ion-avatar>
-                  <img src="{{connection.avatar_image}}">
-                </ion-avatar>
-              </ion-col>
-              <ion-col>
+                <ion-thumbnail item-start>
+                    <img src="{{connection.avatar_image}}">
+                </ion-thumbnail>
                 <h2>{{connection.fullName}}</h2>
-                <p>{{connection.posted}}</p>
-              </ion-col>
-              <ion-col>
+              <ion-col *ngIf="connection.accepted === undefined;">
                 <button ion-button icon-only color="secondary" small (click)="acceptConnectionRequest(connection)">
                     <ion-icon name="ios-checkmark" ></ion-icon>
                 </button>
               </ion-col>
-              <ion-col>
+              <ion-col *ngIf="connection.accepted === undefined;">
                 <button ion-button icon-only color="danger" small (click)="denyConnectionRequest(connection)">
                     <ion-icon name="ios-close" ></ion-icon>
                 </button>
               </ion-col>
-            </ion-row>
-          </span>
-          <ng-template #showConnections>
-              <span *ngIf="connection.accepted === true;">
-                <ion-row>
-                  <ion-col>
-                    <ion-avatar>
-                      <img src="{{connection.avatar_image}}">
-                    </ion-avatar>
-                  </ion-col>
-                  <ion-col>
-                    <h2>{{connection.fullName}}</h2>
-                    <p>Accepted on: {{connection.posted}}</p>
-                  </ion-col>
-                </ion-row>
-              </span>
-          </ng-template>
         </ion-item>
       </ion-list>
 </ion-content>

@@ -28,6 +28,7 @@ export class PublicForumPage {
     image: null,
     posted: moment().format('MMMM Do YYYY, h:mm:ss a')
   }
+  liked = false;
   uploadedImage = null;
   constructor(public navCtrl: NavController, public navParams: NavParams, public forum: ForumProvider, public modalCtrl: ModalController, private http: HttpProvider, public loader: LoadProvider, public user: UserProvider, public nativeAudio: NativeAudio) {
   }
@@ -52,8 +53,10 @@ export class PublicForumPage {
       console.log(liked);
       if (liked) {
         post.likes--;
+        post.liked = false;
       } else {
         post.likes++;
+        post.liked = true;
       }
       await this.http.updatePostLikes(post, this.user.user.uid, liked);
     }
