@@ -1,6 +1,6 @@
 platforms/
 node_modules/
 plugins/
-
+android-release-unsigned.apk
 tracker.apk
 tracker-key.keystore

@@ -115,7 +115,7 @@ export class LoadPage {
 
     this.chatData();
 
-    await this.http.getUserChats();
+    this.http.getUserChats();
     this.loadProgress += 20;
     
     return;
@@ -125,7 +125,6 @@ export class LoadPage {
     this.events.subscribe('user:set', async (user) => {
       await this.loadUserData(user);
       console.log("User Found");
-      console.log(user);
       let percentLeft = 100 - this.loadProgress;
       if (this.loadProgress < 100) this.loadProgress += percentLeft;
       if (user.emailVerified) {
