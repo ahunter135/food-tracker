@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
+import firebase from 'firebase';
 
 const { Storage } = Plugins;
 @Injectable({
@@ -78,18 +79,25 @@ export class StorageService {
   }
 
   async getUserData() {
-    let uid = null;
-    if (this.user !== null) uid = this.user.uid;
-    else return false;
-    let database = this.databaseRef.ref('user-accounts/' + uid);
-    let temp = await database.once('value');
-    console.log(temp.val());
-    if (!temp.val()) return;
-    this.user.items = (temp.val().items === undefined ? [] : temp.val().items);
-    this.user.entries = (temp.val().entries === undefined ? [] : temp.val().entries);
-    this.user.fullName = temp.val().fullName;
-    this.user.myStory = temp.val().myStory;
-    this.user.role = temp.val().role;
-    this.user.email = this.user.email;
+    console.log("HEREEEE");
+    return new Promise((resolve, reject) => {
+      console.log("!11");
+      let uid = null;
+      console.log(this.user.uid);
+      if (this.user !== null) uid = this.user.uid;
+      console.log("2222");
+      firebase.database().ref('user-accounts/' + uid).get().then((temp) => {
+        console.log(temp);
+        if (!temp.val()) reject();
+        this.user.items = (temp.val().items === undefined ? [] : temp.val().items);
+        this.user.entries = (temp.val().entries === undefined ? [] : temp.val().entries);
+        this.user.fullName = temp.val().fullName;
+        this.user.myStory = temp.val().myStory;
+        this.user.role = temp.val().role;
+        this.user.email = this.user.email;
+        resolve(true);
+      });
+      console.log("3333");
+    });
   }
 }

@@ -8,7 +8,17 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AdMob } from '@admob-plus/ionic/ngx';
+import firebase from 'firebase';
 
+firebase.initializeApp({
+  apiKey: "AIzaSyCLOlz7uQrEC-HutG9MILNsgMtFE5CyOyU",
+  authDomain: "foodtracker-8cd65.firebaseapp.com",
+  databaseURL: "https://foodtracker-8cd65.firebaseio.com/",
+  projectId: "foodtracker-8cd65",
+  storageBucket: "gs://foodtracker-8cd65.appspot.com",
+  messagingSenderId: "1074520532115"
+});
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -20,6 +30,7 @@ import { AppRoutingModule } from './app-routing.module';
   providers: [
     StatusBar,
     SplashScreen,
+    AdMob,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

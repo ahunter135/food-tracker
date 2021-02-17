@@ -42,10 +42,15 @@ export class FolderPage implements OnInit {
       }
     }
     this.storage.user = loggedIn;
+
+    this.ionViewWillEnter();
+  }
+
+  async ionViewWillEnter() {
+    console.log("HERE");
     await this.storage.getUserData();
     this.itemList = this.storage.user.items ? this.storage.user.items : [];
     this.entryList = this.storage.user.entries ? this.storage.user.entries : [];
-
     this.entryList.sort(this.custom_sort);
   }
 
