@@ -1,0 +1,113 @@
+<ion-header [translucent]="true" *ngIf="folder == 'Directory'">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="success"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Directory</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="folder == 'Directory'">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Directory</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-searchbar (ionInput)="search($event.target.value)" debounce="200" showCancelButton="focus"
+    (ionCancel)="resetSearch()"></ion-searchbar>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of itemList">
+      <ion-item>
+        <ion-icon name='{{item.icon}}' slot="start"
+          [ngStyle]="{'color': item.feeling == 'Great' ?' var(--ion-color-success)' : item.feeling == 'Okay' ? 'var(--ion-color-warning)' : 'var(--ion-color-danger)'}">
+        </ion-icon>
+        {{item.name}}
+        <ion-chip slot="end" *ngIf="item.feeling == 'Great'" color="success">
+          <div>{{item.feeling}}</div>
+        </ion-chip>
+        <ion-chip slot="end" *ngIf="item.feeling == 'Okay'" color="warning">
+          <div>{{item.feeling}}</div>
+        </ion-chip>
+        <ion-chip slot="end" *ngIf="item.feeling == 'Awful'" color="danger">
+          <div>{{item.feeling}}</div>
+        </ion-chip>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option (click)="removeItem(item)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" (click)="addItem()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+<ion-header [translucent]="true" *ngIf="folder == 'Journal'">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="success"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Journal</ion-title>
+    <!--<ion-buttons slot="end">
+      <ion-icon color="success" slot="icon-only" name="search" (click)="searching = !searching"></ion-icon>
+    </ion-buttons>-->
+  </ion-toolbar>
+
+  <ion-toolbar [hidden]="!searching">
+    <ion-searchbar (ionInput)="search($event.target.value)" debounce="200" showCancelButton="focus"
+      (ionCancel)="resetSearch()"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="folder == 'Journal'">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Journal</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Entry</ion-card-subtitle>
+      <ion-item lines="none">
+        <ion-label position="stacked">Choose a Date</ion-label>
+        <ion-datetime displayFormat="MMM DD, YYYY" value="{{today}}" min="1994-03-14" max="{{today}}"
+          [(ngModel)]="entry.date"></ion-datetime>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-textarea rows="10" autocapitalize="true" maxlength="2000" placeholder="Enter your journal entry here..."
+        [(ngModel)]="entry.text">
+      </ion-textarea>
+      <br>
+      <ion-button expand="block" color="dark" (click)="submitEntry()">Submit</ion-button>
+      <ion-button expand="block" color="light" (click)="clearEntry()">Clear</ion-button>
+      <br>
+      <ion-range min="0" max="15" step="1" snaps="true" ticks="true" pin="true" color="success" [(ngModel)]="entry.bms">
+        <ion-icon size="small" slot="start" name="trash-outline"></ion-icon>
+        <ion-icon slot="end" name="trash"></ion-icon>
+      </ion-range>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let entry of entryList">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="ellipsis-vertical" style="font-size: 14px" (click)="removeEntry(entry)"></ion-icon>
+        {{entry.date | date:'mediumDate'}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>{{entry.bms}} BM's</ion-card-subtitle>
+      <ion-card-content text-wrap>
+        {{entry.text}}
+      </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

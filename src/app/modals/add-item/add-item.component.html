@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="dismiss()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Add Item
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Food Title</ion-label>
+        <ion-input type="text" [(ngModel)]="item.name" style="height: 50px;" autocomplete="on" autocorrect="on">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label style="color: black" position="stacked" text-wrap>
+          How does it make you feel?
+        </ion-label>
+        <ion-select placeholder="Select One" [(ngModel)]="feeling">
+          <ion-select-option value="0">Awful</ion-select-option>
+          <ion-select-option value="1">Okay</ion-select-option>
+          <ion-select-option value="2">Great</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <br>
+      <br>
+      <ion-button expand="block" color="dark" (click)="submit()">Submit</ion-button>
+      <ion-button expand="block" color="light" (click)="dismiss()">Cancel</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <!--
+  <ion-list>
+
+    <ion-item style="padding-bottom: 15px">
+      <ion-label style="color: black" stacked>Food Title</ion-label>
+      <ion-input type="text" [(ngModel)]="item.name" style="height: 50px;" autocomplete="on" autocorrect="on">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label style="color: black">
+        <div *ngIf="(feeling === 0); else showOkay">Awful</div>
+        <ng-template #showOkay>
+          <div *ngIf="(feeling === 1); else showGreat">Okay</div>
+        </ng-template>
+        <ng-template #showGreat>
+          <div *ngIf="(feeling === 2);">Great</div>
+        </ng-template>
+      </ion-label>
+      <ion-range min="0" max="2" step="1" snaps="true" color="secondary" [(ngModel)]="feeling"></ion-range>
+    </ion-item>
+
+  </ion-list>
+  <button ion-button block style="color: white" (click)="submit()">Submit</button>
+  <div style="text-align:center"><button ion-button small outline (click)="dismiss()">Cancel</button></div>-->
+</ion-content>
